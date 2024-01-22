@@ -1,0 +1,165 @@
+<div class="dashboard">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="dash-home">
+    <app-header></app-header>
+
+    <div class="dash-add">
+      <div class="dash-container"> 
+        <div class="breadcrumb">
+            <h1>Clientes</h1>
+            <span>/</span>  
+            <h2>Adicionar cliente</h2>
+        </div>
+
+        <form (ngSubmit)="addPessoa()" [formGroup]="form">
+          <div class="form-head">
+              <h3>Dados cadastrais</h3> 
+              <div class="line"></div>
+              <div class="obg-camp">
+                <div>
+                  <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+                </div>
+                <p>Campos obrigatórios</p>
+              </div>
+          </div>
+
+          <div class="form-container">
+            <div class="form-camp mb-3 mt-4">
+              <label for="exampleInputName" class="form-label">
+                CNPJ/CPF
+                <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+              </label>
+              <input 
+                id="input-cpf"
+                inputmode="numeric"
+                mask="000.000.000-00 || 00.000.000/0000-00" 
+                formControlName="identificacao" 
+                type="text" 
+                class="form-control"  
+                placeholder="Insira seu CNPJ/CPF" 
+                [ngClass]="{ 'error': form.get('identificacao')?.invalid && form.get('identificacao')?.touched }"
+                required
+              >
+              <span *ngIf="form.get('identificacao')?.hasError('required') && form.get('identificacao')?.touched ">Digite um CNPJ/CPF válido.</span>
+            </div>
+
+            <div class="form-name">
+              <!-- Nome -->
+              <div class="form-camp form-camp-one">
+                <label for="exampleInputName" class="form-label">
+                  Nome
+                  <img src="../../../../assets/icons/asterisco.svg" alt="">
+                </label>
+
+                <input 
+                  formControlName="nome" 
+                  type="text" 
+                  class="form-control" 
+                  id="exampleInputName" 
+                  aria-describedby="nameHelp"
+                  placeholder="Insira seu Nome" 
+                  [ngClass]="{ 'error': form.get('nome')?.invalid && form.get('nome')?.touched }"
+                  >
+
+                <span *ngIf="form.get('nome')?.hasError('required') && form.get('nome')?.touched">Digite um nome válido.</span>
+              </div>
+
+              <!-- Nome fantasia -->
+
+              <div *ngIf="cnpjActive" class="form-camp form-camp-one" id="nomeFantasia">
+                <label for="exampleInputName" class="form-label">
+                  Nome fantasia
+                  <img src="../../../../assets/icons/asterisco.svg" alt="">
+                </label>
+
+                <input 
+                  formControlName="nome_fantasia" 
+                  type="text" class="form-control" 
+                  id="exampleInputName" 
+                  aria-describedby="nameHelp"
+                  placeholder="Insira o nome fantasia do CNPJ" 
+                  [ngClass]="{ 'error': form.get('nome_fantasia')?.invalid && form.get('nome_fantasia')?.touched }">
+
+                <span *ngIf="form.get('nome_fantasia')?.hasError('required') && form.get('nome_fantasia')?.touched">Digite um nome fantasia válido.</span>
+              </div>
+
+
+              <!-- Nome da mãe -->
+
+              <div *ngIf="cpfActive" class="form-camp form-camp-one">
+                <label for="exampleInputName" class="form-label">
+                  Nome da mãe
+                  <img src="../../../../assets/icons/asterisco.svg" alt="">
+                </label>
+
+                <input formControlName="nome_mae" type="text" class="form-control" id="exampleInputName"
+                  aria-describedby="nameHelp" placeholder="Insira o nome fantasia do CNPJ"
+                  [ngClass]="{ 'error': form.get('nome_mae')?.invalid && form.get('nome_mae')?.touched }">
+
+                <span *ngIf="form.get('nome_mae')?.hasError('required') && form.get('nome_mae')?.touched">Digite um nome
+                  fantasia válido.</span>
+              </div>
+
+            </div>
+
+            <!-- Inscrição cnpj -->
+            <div class="form-name">
+              <!-- inscrição municipal -->
+              <div *ngIf="cnpjActive" class="form-camp form-camp-one">
+                <label for="inscricao_municipal" class="form-label">
+                  inscrição municipal
+                  <img src="../../../../assets/icons/asterisco.svg" alt="">
+                </label>
+
+                <input formControlName="inscricao_municipal" type="text" class="form-control" id="inscricao_municipal" aria-describedby="nameHelp"
+                  placeholder="Insira seu Nome" [ngClass]="{ 'error': form.get('inscricao_municipal')?.invalid && form.get('inscricao_municipal')?.touched }">
+
+                <span *ngIf="form.get('inscricao_municipal')?.hasError('required') && form.get('inscricao_municipal')?.touched">Digite um nome válido.</span>
+              </div>
+
+              <!-- Inscrição estadual -->
+              <div *ngIf="cnpjActive" class="form-camp form-camp-one">
+                <label for="inscricao_estadual" class="form-label">
+                  Inscrição estadual
+                  <img src="../../../../assets/icons/asterisco.svg" alt="">
+                </label>
+
+                <input formControlName="inscricao_estadual" type="text" class="form-control" id="inscricao_estadual"
+                  aria-describedby="nameHelp" placeholder="Insira o nome fantasia do CNPJ"
+                  [ngClass]="{ 'error': form.get('inscricao_estadual')?.invalid && form.get('inscricao_estadual')?.touched }">
+
+                <span *ngIf="form.get('inscricao_estadual')?.hasError('required') && form.get('inscricao_estadual')?.touched">Digite um nome
+                  fantasia válido.</span>
+              </div>
+
+            </div>
+
+          </div> 
+
+          <div class="form-btn">
+            <button routerLink="/dashboard/client" type="button" class="btn btn-canc">Cancelar</button>
+            <button type="submit" class="btn btn-safe" [disabled]="isSubmitDisabled">Salvar cliente</button>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="aside">
+        <div class="aside-item active">
+          <a routerLink="dashboard/client/add">Dados cadastrais</a>
+        </div>
+        <div class="aside-item">
+          <a routerLink="/dashboard/client/local">Localização</a>
+        </div>
+        <div class="aside-item">
+          <a routerLink="/dashboard/client/repres">Representantes</a>
+        </div>
+      </div>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+
+</div>

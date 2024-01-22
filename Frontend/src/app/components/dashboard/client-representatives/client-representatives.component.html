@@ -1,0 +1,266 @@
+<div class="dashboard">
+
+    <app-sidebar></app-sidebar>
+  
+    <div class="dash-home">
+        <app-header></app-header>
+
+        <div class="representatives">  
+            <div class="representatives-main" *ngIf="ContainerMain">
+                <!-- Title -->
+                <div>
+                    <div class="breadcrumb">
+                        
+                        <h1>Clientes</h1> 
+                        <span>/</span> 
+                        <h2>Adicionar cliente</h2>
+                    </div>
+                    <div class="sub-breadcrumb">
+                        <h1 class="title">Representantes</h1>
+        
+                        <div class="sub-breadcrumb-line">
+                            <div class="brr"></div>
+                            <div class="span">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.00696 0C6.19412 0 6.35009 0.056338 6.47486 0.169014C6.59964 0.28169 6.66203 0.422535 6.66203 0.591549V4.98592L10.9979 2.76056C11.1643 2.68545 11.3306 2.67606 11.497 2.73239C11.6842 2.76995 11.8193 2.86385 11.9025 3.01408C12.0065 3.14554 12.0273 3.29577 11.9649 3.46479C11.9233 3.61502 11.8193 3.73709 11.653 3.83099L7.37947 6L11.653 8.16901C11.8193 8.26291 11.9233 8.39437 11.9649 8.56338C12.0273 8.71362 12.0065 8.85446 11.9025 8.98592C11.8193 9.13615 11.6842 9.23944 11.497 9.29577C11.3306 9.33333 11.1643 9.31455 10.9979 9.23944L6.66203 7.01408V11.4085C6.66203 11.5775 6.59964 11.7183 6.47486 11.831C6.35009 11.9437 6.19412 12 6.00696 12C5.8198 12 5.66384 11.9437 5.53906 11.831C5.41429 11.7183 5.3519 11.5775 5.3519 11.4085V7.01408L1.01601 9.23944C0.84965 9.31455 0.672887 9.33333 0.485726 9.29577C0.319361 9.23944 0.194588 9.13615 0.111405 8.98592C0.00742701 8.85446 -0.0237664 8.71362 0.0178248 8.56338C0.0802117 8.39437 0.194588 8.26291 0.360953 8.16901L4.63445 6L0.360953 3.83099C0.194588 3.73709 0.0802117 3.61502 0.0178248 3.46479C-0.0237664 3.29577 0.00742701 3.14554 0.111405 3.01408C0.194588 2.86385 0.319361 2.76995 0.485726 2.73239C0.672887 2.67606 0.84965 2.68545 1.01601 2.76056L5.3519 4.98592V0.591549C5.3519 0.422535 5.41429 0.28169 5.53906 0.169014C5.66384 0.056338 5.8198 0 6.00696 0Z" fill="#6C757D"/>
+                                </svg>
+                                <span>Campos obrigatórios</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button (click)="showAddRepress()" class="btn representatives-btn">Adicionar representante</button>
+                </div>
+
+                <!-- Sem representantes -->
+                <div class="representative-banner" *ngIf="!listRepress || listRepress.length === 0">
+                  <img src="../../../../assets/img/banner-representantes.svg" alt="">
+                </div>
+
+                <!-- Com representantes -->
+                <div class="representatives-list" *ngIf="listRepress && listRepress.length > 0">
+                    <table class="table">
+                        <thead>   
+                          <tr class="table-header">
+                            <th class="col-8">
+                              Nome - CPF/CNPJ 
+                            </th> 
+                            <th></th> 
+                            <th></th>
+                          </tr>
+                        </thead>
+                  
+                        <tbody>
+                          <tr *ngFor="let repress of listRepress" class="table-body">
+                            <td>
+                              <div class="name">
+                                <p>
+                                  {{ repress.nome }}
+                                </p>
+                                <p>{{ repress.identificacao }}</p>
+                              </div>
+                            </td>
+                            
+                            <td></td>
+
+                            <td class="buttons-rep">
+                              <div class="body-icons">
+                                <a class="edit" (click)="getRepressIdEdit(repress.id_representante!)">
+                                  <img src="../../../assets/icons/edit.svg" alt="Editar o o cliente">
+                                </a>
+                                <a class="delete" (click)="showDeleteRepress()">
+                                  <img src="../../../assets/icons/delete.svg" alt="Apagar o cliente">
+                                </a>
+                              </div>
+                            </td>
+                   
+                            <!-- Confirmar exclusão -->
+                            <div class="client-delete" *ngIf="popupDeleteRepress">
+                              <div class="card">
+                  
+                                <div class="delete-header">
+                                  <h3 class="card-header">Excluir cliente?</h3>
+                                  <span (click)="showDeleteRepress()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
+                                </div>
+                                <div class="delete-body">
+                                  <div class="delete-text">
+                                    <p>Você tem certeza que deseja excluir?</p>
+                                    <p >Os registros excluídos não poderão ser restaurados.</p>
+                                  </div>
+                  
+                                  <div class="delete-buttons">
+                                    <a class="btn-cancel" (click)="showDeleteRepress()">Cancelar</a>
+                                    <button (click)="deleteRepress(repress.id_representante!)" class="btn-del">Excluir</button>
+                                  </div>
+                                </div>
+                  
+                              </div>
+                            </div>
+                          </tr>
+                        </tbody>
+                  
+                    </table>
+                </div>
+            </div>
+
+            <!-- Componente de Adicionar de um representante -->
+            <div class="representative-add" *ngIf="AddRepress">
+              <form [formGroup]="formRepress">
+                <!-- Title -->
+                <div>
+                  <div class="breadcrumb">
+                      
+                      <h1>Clientes</h1>
+                      <span>/</span> 
+                      <h2>Adicionar cliente</h2>
+                  </div>
+                  <div class="sub-breadcrumb">
+                      <h1 class="title">Representantes</h1>
+      
+                      <div class="sub-breadcrumb-line">
+                          <div class="brr"></div>
+                          <div class="span">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M6.00696 0C6.19412 0 6.35009 0.056338 6.47486 0.169014C6.59964 0.28169 6.66203 0.422535 6.66203 0.591549V4.98592L10.9979 2.76056C11.1643 2.68545 11.3306 2.67606 11.497 2.73239C11.6842 2.76995 11.8193 2.86385 11.9025 3.01408C12.0065 3.14554 12.0273 3.29577 11.9649 3.46479C11.9233 3.61502 11.8193 3.73709 11.653 3.83099L7.37947 6L11.653 8.16901C11.8193 8.26291 11.9233 8.39437 11.9649 8.56338C12.0273 8.71362 12.0065 8.85446 11.9025 8.98592C11.8193 9.13615 11.6842 9.23944 11.497 9.29577C11.3306 9.33333 11.1643 9.31455 10.9979 9.23944L6.66203 7.01408V11.4085C6.66203 11.5775 6.59964 11.7183 6.47486 11.831C6.35009 11.9437 6.19412 12 6.00696 12C5.8198 12 5.66384 11.9437 5.53906 11.831C5.41429 11.7183 5.3519 11.5775 5.3519 11.4085V7.01408L1.01601 9.23944C0.84965 9.31455 0.672887 9.33333 0.485726 9.29577C0.319361 9.23944 0.194588 9.13615 0.111405 8.98592C0.00742701 8.85446 -0.0237664 8.71362 0.0178248 8.56338C0.0802117 8.39437 0.194588 8.26291 0.360953 8.16901L4.63445 6L0.360953 3.83099C0.194588 3.73709 0.0802117 3.61502 0.0178248 3.46479C-0.0237664 3.29577 0.00742701 3.14554 0.111405 3.01408C0.194588 2.86385 0.319361 2.76995 0.485726 2.73239C0.672887 2.67606 0.84965 2.68545 1.01601 2.76056L5.3519 4.98592V0.591549C5.3519 0.422535 5.41429 0.28169 5.53906 0.169014C5.66384 0.056338 5.8198 0 6.00696 0Z" fill="#6C757D"/>
+                              </svg>
+                              <span>Campos obrigatórios</span>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+      
+                <div class="form-container">
+                  <div class="form-camp mb-3 mt-4">
+                    <label for="exampleInputName" class="form-label">
+                      CNPJ/CPF
+                      <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+                    </label>
+                    <input 
+                      id="input-cpf"
+                      inputmode="numeric"
+                      mask="000.000.000-00 || 00.000.000/0000-00" 
+                      type="text" 
+                      class="form-control"  
+                      placeholder="Insira seu CNPJ/CPF"
+                      formControlName="identificacao"
+                      [ngClass]="{ 'error': formRepress.get('identificacao')?.invalid && formRepress.get('identificacao')?.touched }"
+                      required
+                    >
+
+                    <span *ngIf="formRepress.get('identificacao')?.hasError('required') && formRepress.get('identificacao')?.touched ">Digite um CNPJ/CPF válido.</span>
+
+                  </div>
+
+                  <div class="form-camp mb-3 mt-4 form-containe-nome">
+                    <label for="nome" class="form-label">
+                      Nome
+                      <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+                    </label>
+
+                    <input 
+                      id="nome"
+                      type="text" 
+                      class="form-control"  
+                      placeholder="Insira seu CNPJ/CPF"
+                      formControlName="nome"
+                      [ngClass]="{ 'error': formRepress.get('nome')?.invalid && formRepress.get('nome')?.touched }"
+                    >
+                  </div>
+
+                  <span *ngIf="formRepress.get('nome')?.hasError('required') && formRepress.get('nome')?.touched">Digite um nome válido.</span>
+                </div>
+
+                <div class="form-btn">
+                  <button (click)="showAddRepress()" type="button" class="btn btn-canc">Cancelar</button>
+                  <button (click)="addRepress()" type="submit" class="btn btn-safe">Salvar cliente</button>
+                </div>
+
+              </form> 
+            </div>
+
+             <!-- Componente de Editar de um representante -->
+             <div class="representative-add" *ngIf="EditRepress">
+              <form [formGroup]="formRepressEdit" (ngSubmit)="editRepress()">
+                <!-- Title -->
+                <div>
+                  <div class="breadcrumb">
+                      
+                      <h1>Clientes</h1>
+                      <span>/</span> 
+                      <h2>Editar cliente</h2>
+                  </div>
+                  <div class="sub-breadcrumb">
+                      <h1 class="title">Representantes</h1>
+      
+                      <div class="sub-breadcrumb-line">
+                          <div class="brr"></div>
+                          <div class="span">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M6.00696 0C6.19412 0 6.35009 0.056338 6.47486 0.169014C6.59964 0.28169 6.66203 0.422535 6.66203 0.591549V4.98592L10.9979 2.76056C11.1643 2.68545 11.3306 2.67606 11.497 2.73239C11.6842 2.76995 11.8193 2.86385 11.9025 3.01408C12.0065 3.14554 12.0273 3.29577 11.9649 3.46479C11.9233 3.61502 11.8193 3.73709 11.653 3.83099L7.37947 6L11.653 8.16901C11.8193 8.26291 11.9233 8.39437 11.9649 8.56338C12.0273 8.71362 12.0065 8.85446 11.9025 8.98592C11.8193 9.13615 11.6842 9.23944 11.497 9.29577C11.3306 9.33333 11.1643 9.31455 10.9979 9.23944L6.66203 7.01408V11.4085C6.66203 11.5775 6.59964 11.7183 6.47486 11.831C6.35009 11.9437 6.19412 12 6.00696 12C5.8198 12 5.66384 11.9437 5.53906 11.831C5.41429 11.7183 5.3519 11.5775 5.3519 11.4085V7.01408L1.01601 9.23944C0.84965 9.31455 0.672887 9.33333 0.485726 9.29577C0.319361 9.23944 0.194588 9.13615 0.111405 8.98592C0.00742701 8.85446 -0.0237664 8.71362 0.0178248 8.56338C0.0802117 8.39437 0.194588 8.26291 0.360953 8.16901L4.63445 6L0.360953 3.83099C0.194588 3.73709 0.0802117 3.61502 0.0178248 3.46479C-0.0237664 3.29577 0.00742701 3.14554 0.111405 3.01408C0.194588 2.86385 0.319361 2.76995 0.485726 2.73239C0.672887 2.67606 0.84965 2.68545 1.01601 2.76056L5.3519 4.98592V0.591549C5.3519 0.422535 5.41429 0.28169 5.53906 0.169014C5.66384 0.056338 5.8198 0 6.00696 0Z" fill="#6C757D"/>
+                              </svg>
+                              <span>Campos obrigatórios</span>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+      
+                <div class="form-container">
+                  <div class="form-camp mb-3 mt-4">
+                    <label for="exampleInputName" class="form-label">
+                      CNPJ/CPF
+                      <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+                    </label>
+                    <input 
+                      id="input-cpf"
+                      inputmode="numeric"
+                      mask="000.000.000-00 || 00.000.000/0000-00" 
+                      type="text" 
+                      class="form-control"  
+                      placeholder="Insira seu CNPJ/CPF"
+                      formControlName="identificacao"
+                    >
+                  </div>
+
+                  <div class="form-camp mb-3 mt-4 form-containe-nome">
+                    <label for="nome" class="form-label">
+                      Nome
+                      <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco.">
+                    </label>
+
+                    <input 
+                      id="nome"
+                      type="text" 
+                      class="form-control"  
+                      placeholder="Insira seu CNPJ/CPF"
+                      formControlName="nome"
+                    >
+                  </div>
+                </div>
+
+                <div class="form-btn">
+                  <button (click)="showEditRepress()" type="button" class="btn btn-canc">Cancelar</button>
+                  <button  (click)="editRepress()" type="submit" class="btn btn-safe">Salvar cliente</button>
+                </div>
+
+              </form>
+            </div>
+
+            
+            <div class="aside">
+                <div class="aside-item">
+                <a routerLink="dashboard/client/add">Dados cadastrais</a>
+                </div>
+                <div class="aside-item">
+                <a routerLink="/dashboard/client/local">Localização</a>
+                </div>
+                <div class="aside-item active">
+                <a routerLink="/dashboard/client/repres">Representantes</a>
+                </div>
+            </div>
+          </div>
+          <app-footer></app-footer>
+          
+        </div>
+        
+      </div>
+      

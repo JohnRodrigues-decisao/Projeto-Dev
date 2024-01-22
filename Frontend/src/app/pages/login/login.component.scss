@@ -1,0 +1,150 @@
+.login{
+  color: white;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+};
+
+.login-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form{
+  width: 100%;
+  max-width: 400px;
+
+  .login-logo {
+    display: flex;
+    justify-content: center;
+    img{
+      width: 40px;
+      height: 48px;
+    }
+  }
+
+  h2{
+    text-align: center;
+    font-family: 'Inter-900', sans-serif;
+    font-size: 28px;
+    margin-top: 16px;
+  }
+
+  p{
+    text-align: center;
+    color: var(--gray-600, #6C757D);
+    font-size: 14px;
+    line-height: 20px; /* 142.857% */
+  }
+
+  label{
+    color: var(--grayscale-300, #CED4DA);
+    font-size: 14px;
+    line-height: 20px;
+    .asterisco img{
+      width: 12px;
+    }
+  }
+
+  input{
+    display: flex;
+    padding: 0px 8px;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    border-radius: 4px;
+    border: 1px solid var(--grayscale-400, #6C757D);
+    background: var(--grayscale-500, #2F3337);
+    padding: 6px;
+    color: var(--grayscale-0, #FFF);
+    font-size: 14px;
+    line-height: 20px;
+
+  }
+
+
+  .btn{
+    height: 36px;
+    padding: 8px 16px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    width: 100%;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    background: var(--primary-300, #0D6CF2);
+  }
+
+  .required-field{
+    display: flex;
+    align-items: center;
+    padding-bottom: 32px;
+    .asterisco img{
+      width: 12px;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+      padding-left: 5px;
+    }
+  }
+
+  .register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p{
+      margin: 0;
+      margin-right: 4px;
+      color: var(--grayscale-400, #6C757D);
+      font-size: 14px;
+      line-height: 20px;
+    }
+    a{
+      color: var(--primary-300, #0D6CF2);
+      font-size: 14px;
+      line-height: 20px;
+      text-decoration-line: underline;
+    }
+  }
+}
+
+.login-c-senha{
+  .input-senha{
+    position: relative;
+    button{
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg{
+        width:16px;
+        height: 17px;
+      }
+    }
+  }
+}
+
+.form-check{
+  cursor: pointer;
+}
+.form-check-label{
+  cursor: pointer;
+}
+
+.form-check .form-check-input:checked {
+  background-color: #0D6CF2;
+  background-image: var(--bs-form-check-bg-image)!important;
+}
+
+@media only screen and (max-width: 600px) {
+
+}

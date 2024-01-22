@@ -1,0 +1,11 @@
+<nav class="dashboard-nav">
+  <div class="btn-logo" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ this.sortLetters(this.nome_conta) }}
+  </div>
+  
+  <ul class="dropdown-menu dropdown-menu-end" *ngFor="let profile of listUserProfile">
+    <li><button routerLink="/dashboard/profile/edit/{{ profile.id_conta }}" class="dropdown-item" type="button">Editar</button></li>
+    <li (click)="logout()"><button class="dropdown-item" type="button">Sair do sistema</button></li>
+  </ul>
+</nav>
+  

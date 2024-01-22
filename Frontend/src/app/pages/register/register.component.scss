@@ -1,0 +1,112 @@
+.login{
+  color: white;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    form{
+      width: 100%;
+      max-width: 400px;
+      .logo-login {
+        display: flex;
+        justify-content: center;
+        img{
+          width: 40px;
+          height: 48px;
+        }
+      }
+
+      h2{
+        text-align: center;
+        font-family: 'Inter-900', sans-serif;
+        font-size: 28px;
+        margin-top: 16px;
+        font-weight: 900;
+      }
+
+      p{
+        text-align: center;
+        color: var(--gray-600, #6C757D);
+        font-size: 14px;
+        line-height: 20px; /* 142.857% */
+      }
+
+      label{
+        color: var(--grayscale-300, #CED4DA);
+        font-size: 14px;
+        line-height: 20px;
+        .asterisco img{
+          width: 12px;
+        }
+      }
+
+      input{
+        display: flex;
+        padding: 0px 8px;
+        align-items: center;
+        gap: 8px;
+        flex: 1 0 0;
+        border-radius: 4px;
+        border: 1px solid var(--grayscale-400, #6C757D);
+        background: var(--grayscale-500, #2F3337);
+        padding: 6px;
+        color: var(--grayscale-0, #FFF);
+        font-size: 14px;
+        line-height: 20px;
+
+      }
+
+      .btn{
+        height: 36px;
+        padding: 8px 16px;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        width: 100%;
+        margin-bottom: 16px;
+        font-size: 14px;
+        border-radius: 8px;
+        background: var(--primary-300, #0D6CF2);
+        margin-top: 26px;
+      }
+
+      .obg-camp{
+        display: flex;
+        align-items: center;
+        padding-bottom: 32px;
+        .asterisco img{
+          width: 12px;
+        }
+        p{
+          margin: 0;
+          padding: 0;
+          padding-left: 5px;
+        }
+      }
+
+      .alter-resister{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p{
+          margin: 0;
+          margin-right: 4px;
+          color: var(--grayscale-400, #6C757D);
+          font-size: 14px;
+          line-height: 20px;
+        }
+        a{
+          color: var(--primary-300, #0D6CF2);
+          font-size: 14px;
+          line-height: 20px;
+          text-decoration-line: underline;
+        }
+      }
+    }
+  }
+};
+
+

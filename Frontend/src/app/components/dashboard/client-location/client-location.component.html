@@ -1,0 +1,603 @@
+<!------------------------------------------------------------------> 
+<!--------------------- DASHBOARD PRINCIPAL ------------------------>
+<!------------------------------------------------------------------>
+
+<div class="dashboard">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="dash-home">
+    <app-header></app-header>
+
+    <div class="dash-add">
+
+      <div class="dash-container"> 
+        <div class="breadcrumb">
+          <h1>Clientes</h1>
+          <span>/</span>
+          <h2>Adicionar cliente</h2>
+        </div> 
+
+        <form>
+          <div class="form-head">
+            <h3>Localização</h3>
+
+            <div class="line"></div>
+
+            <div class="obg-camp">
+              <div>
+                <img src="../../../../assets/icons/asterisco.svg" alt="">
+              </div>
+              <p>Campos obrigatórios</p>
+            </div>
+          </div>
+
+          <div class="form-container">
+            <div class="form-camp mb-3 mt-4">
+
+              <!-- Endereços -->
+              <div class="accordion" [formGroup]="formEndereco">
+                <div class="accordion-item">
+
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#openEndereco"
+                      aria-expanded="false" aria-controls="collapseOne">
+                      Endereços
+                      <div class="line"></div>
+                    </button>
+                  </h2>
+
+                  <a class="collapseOneLink add-location" (click)="showAddEndereco()">+ Adicionar endereço</a>
+                  
+                  <div id="openEndereco" class="accordion-collapse collapse show">
+                    <!--  -->
+                    <div class="card" *ngFor="let endereco of listEndereco">
+                      <div class="card-body">
+                        <div class="card-row">
+                          <p class="card-text">
+                            Rua {{ endereco.logradouro | slice:0:5 }}, {{ endereco.numero | slice:0:2  }}, {{ endereco.complemento | slice:0:5 }}{{ endereco.logradouro!.length > 5 ? '...' : '' }},<br>
+                            {{ endereco.bairro | slice:0:19  }}{{ endereco.bairro!.length > 19 ? '...' : '' }},<br>
+                            {{ endereco.cidade | slice:0:15  }}{{ endereco.cidade!.length > 17 ? '...' : '' }} - {{ endereco.estado | slice:0:2  }}<br>
+                            CEP: {{ endereco.cep | slice: 0:15 }}{{ endereco.cep!.length > 13 ? '...' : '' }}
+                          </p>
+                        </div>
+                        <div class="col col-princ" *ngIf="endereco.is_principal === true">
+                          <div class="col-princ-btn ">Endereço principal</div>
+                        </div>
+                      </div>
+
+                      <div class="card-icons">
+                        <a class="card-link" (click)="showEditEndereco(endereco.id_endereco!)"><img src="../../../../assets/icons/edit.svg" alt="Icone de editar"></a>
+                        <a class="card-link" (click)="showDeleteEndereco(endereco.id_endereco!)"><img src="../../../../assets/icons/delete.svg" alt="Icone de deletar"></a>
+                      </div>
+                    </div>
+                    <!--  -->
+                  </div> 
+                </div>
+              </div> 
+
+              <!-- Telefone -->
+              <div class="accordion" [formGroup]="formTell">
+                <div class="accordion-item" >
+
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#openTell"
+                      aria-expanded="false" aria-controls="collapseOne">
+                      Telefones
+                      <div class="line"></div>
+                    </button>
+                  </h2>
+
+                  <a class="collapseOneLink" (click)="showAddTelefone()">+ Adicionar telefone</a>
+
+                  <!-- show -->
+                  <div id="openTell" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+
+                    <!-- Modal para cadastramento de um novo telefone -->
+                    <div class="colapse-tell" *ngIf="modalAddTellBox">
+
+                      <div class="colapse-tell-opt">
+                        <input type="text" class="form-control" id="exampleInputName" aria-describedby="nameHelp"
+                          placeholder="(xx) x xxxx xxxx" mask="(00) 0 0000-0000 || (00) 0000-0000" formControlName="numero">
+
+                        <button type="button" class="btn btn-canc" (click)="showAddTelefone()">Cancelar</button>
+                        <button type="button" class="btn btn-safe" (click)="addTell()">Adicionar telefone</button>
+                      </div>
+
+                      <div class="collapse-check mb-3 mt-4">
+                        <input type="checkbox" class="form-check-input" id="telefonePrincipal" formControlName="is_principal">
+                        <label class="form-check-label" for="telefonePrincipal">Telefone principal</label>
+                      </div>
+                    </div>
+
+                    <!-- Modal para editar um novo telefone -->
+                    <div class="colapse-tell" *ngIf="modalEditTellBox" [formGroup]="formTellEdit">
+
+                      <div class="colapse-tell-opt">
+                        <input type="text" class="form-control" id="exampleInputName" aria-describedby="nameHelp"
+                          placeholder="(xx) x xxxx xxxx" mask="(00) 0 0000-0000" formControlName="numero">
+
+                        <button (click)="showTellEdit()"  type="button" class="btn btn-canc">Cancelar</button>
+                        <button (click)="editTell()"  type="button" class="btn btn-safe ">Salvar edição</button>
+                      </div>
+
+                      <div class="collapse-check mb-3 mt-4">
+                        <input type="checkbox" class="form-check-input" id="telefonePrincipalEdit" formControlName="is_principal">
+                        <label class="form-check-label" for="telefonePrincipalEdit">Telefone principal</label>
+                      </div>
+                    </div>
+
+                    <!-- Tel cadastrado 1 -->
+                    <div class="tell-columns text-center"  *ngFor="let tell of listTelefone">
+                      
+                      <div class="row" >
+                        <div class="col">
+                          {{ formatarTelefone(tell.numero) }}
+                        </div>
+
+                        <div class="col" *ngIf="isPrincipalCheckedTell">
+                          <div class="col-princ">Principal</div>
+                        </div>
+                      
+                        <div class="col tell-icons">
+                          <a class="card-link" (click)="showEditTelefone(tell.id_telefone!)"><img src="../../../../assets/icons/edit.svg" alt="Icone de editar o telefone"></a>
+                          <a class="card-link delete" (click)="showDeleteTelefone(tell.id_telefone!)"><img src="../../../../assets/icons/delete.svg" alt="Icone de deletar o telefone"></a>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Email  NONE-->
+              <div class="accordion" [formGroup]="formEmail">
+                <div class="accordion-item">
+
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#openEmail"
+                      aria-expanded="false" aria-controls="collapseOne">
+                      <h3>E-mail</h3>
+                      <div class="line"></div>
+                    </button>
+                  </h2>
+
+                  <a class="collapseOneLink" (click)="showAddEmail()">+ Adicionar e-mail</a>
+
+                  <!-- show -->
+                  <div id="openEmail" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+
+                    <!-- Modal para cadastramento de um novo email -->
+                    <div  class="colapse-email" *ngIf="modalAddEmailBox">
+                      <div class="colapse-email-opt">
+                        <input
+                          class="form-control"
+                          placeholder="teste@decisaosistemas.com.br"
+                          type="email"
+                          formControlName="email"
+                          >
+
+                        <button (click)="showAddEmail()" type="button" class="btn btn-canc">Cancelar</button>
+                        <button (click)="addEmail()" type="button" class="btn btn-safe ">Salvar e-mail</button>
+                      </div>
+
+                      <div class="collapse-check mb-3 mt-4">
+                        <input type="checkbox" class="form-check-input" id="telefonePrincipal">
+                        <label class="form-check-label" for="telefonePrincipal">Telefone principal</label>
+                      </div>
+
+                    </div>
+
+                    <!-- Modal para editar um email -->
+                    <div class="colapse-tell" *ngIf="modalEditEmailBox" [formGroup]="formEmailEdit">
+
+                      <div class="colapse-tell-opt">
+                        <input type="text" class="form-control" id="exampleInputName" aria-describedby="nameHelp"
+                          placeholder="teste@decisaosistemas.com.br" formControlName="email">
+
+                        <button (click)="showEmailEditId()"  type="button" class="btn btn-canc">Cancelar</button>
+                        <button (click)="editEmail()"  type="button" class="btn btn-safe ">Salvar edição</button>
+                      </div>
+
+                      <div class="collapse-check mb-3 mt-4">
+                        <input type="checkbox" class="form-check-input" id="telefonePrincipalEdit" formControlName="is_principal">
+                        <label class="form-check-label" for="telefonePrincipalEdit">Telefone principal</label>
+                      </div>
+                    </div>
+
+
+
+                    <!-- Tel cadastrado 1 -->
+                    <div class="tell-columns text-center" *ngFor="let email of listEmail">
+                      <div class="row align-items-start">
+                        <p class="col">
+                          {{ email.email }}
+                        </p>
+                        <div class="col none">
+                          <div class="col-princ">Principal</div>
+                        </div>
+
+                        <div class="col tell-icons">
+                          <a (click)="showEmailEdit(email.id_email!)" class="card-link"><img src="../../../../assets/icons/edit.svg" alt="Icone para editar o email"></a>
+                          <a (click)="showDeleteEmail(email.id_email!)" class="card-link"><img src="../../../../assets/icons/delete.svg" alt="Icone para deletar o email"></a>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-btn mb-3 mt-4">
+            <button type="button" class="btn btn-canc">Cancelar</button>
+            <button routerLink="/dashboard/client/repres/{{ id_pessoa }}" type="button" class="btn btn-safe">Salvar cliente</button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="aside">
+        <div class="aside-item ">
+          <a>Dados cadastrais</a>
+        </div>
+        <div class="aside-item active">
+          <a>Localização</a>
+        </div>
+        <div class="aside-item">
+          <a>Representantes</a>
+        </div>
+      </div>
+
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+
+</div>
+
+<!------------------------------------------------------------------> 
+<!------------------------ CRUD ENDEREÇO --------------------------->
+<!------------------------------------------------------------------>
+
+<!-------------------------- ADICIONAR ----------------------------->
+<div class="location-add" *ngIf="modalAddEndereco">
+  <form [formGroup]="formEndereco" (ngSubmit)="addEndereco()" class="form-location">
+      <div class="form-location-head">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="34" height="34" rx="17" fill="#212529"/>
+              <rect x="1" y="1" width="34" height="34" rx="17" stroke="#0D6CF2" stroke-width="2"/>
+              <path d="M25.4998 17.9998L17.9998 17.9998M17.9998 17.9998L17.9998 10.4998M17.9998 17.9998L10.4998 17.9998M17.9998 17.9998L17.9998 25.4998" stroke="#0D6CF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg> 
+               
+          <h1>Novo endereço</h1>
+      </div>
+
+      <div class="form-location-body">
+          <div class="location-column">
+
+              <div class="location-row">
+                  <label for="fcep">
+                      CEP
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="cep" mask="00.000-000" placeholder="00.000-000" type="text" id="fcep" name="fcep" [ngClass]="{ 'error-input': formEndereco.get('cep')?.invalid && formEndereco.get('cep')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEndereco.get('cep')?.hasError('required') && formEndereco.get('cep')?.touched">Insira um CEP válido</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fnumero">
+                      Número: 
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="numero" type="text" id="fnumero" name="fnumero" [ngClass]="{ 'error-input': formEndereco.get('numero')?.invalid && formEndereco.get('numero')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEndereco.get('numero')?.hasError('required') && formEndereco.get('numero')?.touched">Insira um número</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fbairro">
+                      Bairro: 
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="bairro" type="text" id="fbairro" name="fbairro" [ngClass]="{ 'error-input': formEndereco.get('bairro')?.invalid && formEndereco.get('bairro')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEndereco.get('bairro')?.hasError('required') && formEndereco.get('bairro')?.touched">Insira o bairro</span>
+                                      </div>
+              </div>
+
+          </div>
+          <div class="location-column collumn-right">
+
+              <div class="location-row">
+                  <label for="flogradouro">
+                      Logradouro
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+
+                  <input formControlName="logradouro" type="text" id="flogradouro" name="flogradouro" [ngClass]="{ 'error-input': formEndereco.get('logradouro')?.invalid && formEndereco.get('logradouro')?.touched}">
+              
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEndereco.get('logradouro')?.hasError('required') && formEndereco.get('logradouro')?.touched">Sample text</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fcomplemento">Complemento
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                  <input formControlName="complemento" type="text" id="fcomplemento" name="fcomplemento">
+              </div>
+
+              <div class="location-row city">
+                  <div class="location-col">
+                      <label for="fcidade">Cidade
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                          </svg>
+                      </label>
+                      <input formControlName="cidade" type="text" id="fcidade" name="fcidade" [ngClass]="{ 'error-input': formEndereco.get('cidade')?.invalid && formEndereco.get('cidade')?.touched}">
+                      <div class="relative">
+                        <span class="error-camp-form" *ngIf="formEndereco.get('cidade')?.hasError('required') && formEndereco.get('cidade')?.touched">Insira uma cidade</span>
+                      </div>
+                  </div>
+                  <div class="location-col">
+                      <label for="festado">
+                          Estado
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                          </svg>
+                      </label>
+                      <input formControlName="estado" type="text" id="festado" name="festado" [ngClass]="{ 'error-input': formEndereco.get('estado')?.invalid && formEndereco.get('estado')?.touched}">
+                      <div class="relative">
+                        <span class="error-camp-form" *ngIf="formEndereco.get('estado')?.hasError('required') && formEndereco.get('estado')?.touched">Insira em estado</span>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+
+      <div class="main-address">
+        <input type="checkbox" id="isPrincipalAddress" formControlName="is_principal">
+        <label for="isPrincipalAddress">Endereço principal</label><br>
+      </div>
+      
+      <div class="form-location-footer">
+          <span class="btn-cancel" (click)="showAddEndereco()">Cancelar</span>
+          <button type="submit" class="btn-safe" [disabled]="!formEndereco.valid">Salvar</button>
+      </div>
+  </form>
+</div>   
+
+<!-------------------------- Editar ----------------------------->
+<div class="location-edit" *ngIf="modalEditEndereco">
+  <form [formGroup]="formEnderecoEdit" (ngSubmit)="editEndereco()" class="form-location">
+      <div class="form-location-head">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="34" height="34" rx="17" fill="#212529"/>
+              <rect x="1" y="1" width="34" height="34" rx="17" stroke="#0D6CF2" stroke-width="2"/>
+              <path d="M25.4998 17.9998L17.9998 17.9998M17.9998 17.9998L17.9998 10.4998M17.9998 17.9998L10.4998 17.9998M17.9998 17.9998L17.9998 25.4998" stroke="#0D6CF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg> 
+               
+          <h1>Editar endereço</h1>
+      </div>
+
+      <div class="form-location-body">
+          <div class="location-column">
+
+              <div class="location-row">
+                  <label for="fcep">
+                      CEP
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="cep" mask="00.000-000" placeholder="00.000-000" type="text" id="fcep" name="fcep" [ngClass]="{ 'error-input': formEnderecoEdit.get('cep')?.invalid && formEnderecoEdit.get('cep')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEnderecoEdit.get('cep')?.hasError('required') && formEnderecoEdit.get('cep')?.touched">Insira um CEP válido</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fnumero">
+                      Número: 
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="numero" type="text" id="fnumero" name="fnumero" [ngClass]="{ 'error-input': formEnderecoEdit.get('numero')?.invalid && formEnderecoEdit.get('numero')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEnderecoEdit.get('numero')?.hasError('required') && formEnderecoEdit.get('numero')?.touched">Insira um número</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fbairro">
+                      Bairro: 
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                      
+                  <input formControlName="bairro" type="text" id="fbairro" name="fbairro" [ngClass]="{ 'error-input': formEnderecoEdit.get('bairro')?.invalid && formEnderecoEdit.get('bairro')?.touched}">
+
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEnderecoEdit.get('bairro')?.hasError('required') && formEnderecoEdit.get('bairro')?.touched">Insira o bairro</span>
+                                      </div>
+              </div>
+
+          </div>
+          <div class="location-column collumn-right">
+
+              <div class="location-row">
+                  <label for="flogradouro">
+                      Logradouro
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+
+                  <input formControlName="logradouro" type="text" id="flogradouro" name="flogradouro" [ngClass]="{ 'error-input': formEnderecoEdit.get('logradouro')?.invalid && formEnderecoEdit.get('logradouro')?.touched}">
+              
+                  <div class="relative">
+                    <span class="error-camp-form" *ngIf="formEnderecoEdit.get('logradouro')?.hasError('required') && formEnderecoEdit.get('logradouro')?.touched">Sample text</span>
+                  </div>
+              </div>
+
+              <div class="location-row">
+                  <label for="fcomplemento">Complemento
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                      </svg>
+                  </label>
+                  <input formControlName="complemento" type="text" id="fcomplemento" name="fcomplemento">
+              </div>
+
+              <div class="location-row city">
+                  <div class="location-col">
+                      <label for="fcidade">Cidade
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                          </svg>
+                      </label>
+                      <input formControlName="cidade" type="text" id="fcidade" name="fcidade" [ngClass]="{ 'error-input': formEnderecoEdit.get('cidade')?.invalid && formEnderecoEdit.get('cidade')?.touched}">
+                      <div class="relative">
+                        <span class="error-camp-form" *ngIf="formEnderecoEdit.get('cidade')?.hasError('required') && formEnderecoEdit.get('cidade')?.touched">Insira uma cidade</span>
+                      </div>
+                  </div>
+                  <div class="location-col">
+                      <label for="festado">
+                          Estado
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 0.0078125C5.14062 0.0078125 5.25781 0.0546875 5.35156 0.148438C5.44531 0.242188 5.49219 0.359375 5.49219 0.5V4.15625L8.75 2.30469C8.875 2.24219 9 2.23438 9.125 2.28125C9.26562 2.3125 9.36719 2.39063 9.42969 2.51562C9.50781 2.625 9.52344 2.75 9.47656 2.89062C9.44531 3.01562 9.36719 3.11719 9.24219 3.19531L6.03125 5L9.24219 6.80469C9.36719 6.88281 9.44531 6.99219 9.47656 7.13281C9.52344 7.25781 9.50781 7.375 9.42969 7.48438C9.36719 7.60938 9.26562 7.69531 9.125 7.74219C9 7.77344 8.875 7.75781 8.75 7.69531L5.49219 5.84375V9.5C5.49219 9.64062 5.44531 9.75781 5.35156 9.85156C5.25781 9.94531 5.14062 9.99219 5 9.99219C4.85938 9.99219 4.74219 9.94531 4.64844 9.85156C4.55469 9.75781 4.50781 9.64062 4.50781 9.5V5.84375L1.25 7.69531C1.125 7.75781 0.992188 7.77344 0.851562 7.74219C0.726562 7.69531 0.632812 7.60938 0.570312 7.48438C0.492188 7.375 0.46875 7.25781 0.5 7.13281C0.546875 6.99219 0.632812 6.88281 0.757812 6.80469L3.96875 5L0.757812 3.19531C0.632812 3.11719 0.546875 3.01562 0.5 2.89062C0.46875 2.75 0.492188 2.625 0.570312 2.51562C0.632812 2.39063 0.726562 2.3125 0.851562 2.28125C0.992188 2.23438 1.125 2.24219 1.25 2.30469L4.50781 4.15625V0.5C4.50781 0.359375 4.55469 0.242188 4.64844 0.148438C4.74219 0.0546875 4.85938 0.0078125 5 0.0078125Z" fill="#6C757D"/>
+                          </svg>
+                      </label>
+                      <input formControlName="estado" type="text" id="festado" name="festado" [ngClass]="{ 'error-input': formEnderecoEdit.get('estado')?.invalid && formEnderecoEdit.get('estado')?.touched}">
+                      <div class="relative">
+                        <span class="error-camp-form" *ngIf="formEnderecoEdit.get('estado')?.hasError('required') && formEnderecoEdit.get('estado')?.touched">Insira em estado</span>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+
+      <div class="main-address">
+        <input type="checkbox" id="isPrincipalAddress" formControlName="is_principal">
+        <label for="isPrincipalAddress">Endereço principal</label><br>
+      </div>
+      
+      <div class="form-location-footer">
+          <span class="btn-cancel" (click)="showEditEnderecoSid()">Cancelar</span>
+          <button type="submit" class="btn-safe" [disabled]="!formEnderecoEdit.valid">Salvar</button>
+      </div>
+  </form>
+</div> 
+
+<!-------------------------- Excluir ----------------------------->
+<!-- Confirmar exclusão -->
+<div class="client-delete" *ngIf="modalDeleteEndereco">
+  <div class="card">
+
+    <div class="delete-header">
+      <h3 class="card-header">Excluir cliente?</h3>
+      <span (click)="showDeleteEnderecoId()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
+    </div>
+
+    <div class="delete-body">
+      <div class="delete-text">
+        <p>Você tem certeza que deseja excluir?</p>
+        <p >Os registros excluídos não poderão ser restaurados.</p>
+      </div>
+
+      <div class="delete-buttons">
+        <a (click)="showDeleteEnderecoId()" class="btn-cancel">Cancelar</a>
+        <button (click)="deleteEndereco()" class="btn-del">Excluir</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!------------------------------------------------------------------> 
+<!------------------------ CRUD Telefone --------------------------->
+<!------------------------------------------------------------------>
+
+<div class="client-delete" *ngIf="modalDeleteTell">
+  <div class="card">
+
+    <div class="delete-header">
+      <h3 class="card-header">Excluir cliente?</h3>
+      <span (click)="showDeleteEnderecoId()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
+    </div>
+
+    <div class="delete-body">
+      <div class="delete-text">
+        <p>Você tem certeza que deseja excluir?</p>
+        <p >Os registros excluídos não poderão ser restaurados.</p>
+      </div>
+
+      <div class="delete-buttons">
+        <a (click)="showDeleteTelefoneId()" class="btn-cancel">Cancelar</a>
+        <button (click)="deleteTell()" class="btn-del">Excluir</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!------------------------------------------------------------------> 
+<!------------------------ CRUD email --------------------------->
+<!------------------------------------------------------------------>
+<div class="client-delete" *ngIf="modalDeleteemail">
+  <div class="card">
+
+    <div class="delete-header">
+      <h3 class="card-header">Excluir cliente?</h3>
+      <span (click)="showDeleteEnderecoId()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
+    </div>
+
+    <div class="delete-body">
+      <div class="delete-text">
+        <p>Você tem certeza que deseja excluir?</p>
+        <p >Os registros excluídos não poderão ser restaurados.</p>
+      </div>
+
+      <div class="delete-buttons">
+        <a (click)="showDeleteEmailId()" class="btn-cancel">Cancelar</a>
+        <button (click)="deleteEmail()" class="btn-del">Excluir</button>
+      </div>
+    </div>
+
+  </div>
+</div>

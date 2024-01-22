@@ -1,0 +1,51 @@
+.dashboard-nav{
+  border-bottom: 1px solid rgba(47, 51, 55, 1);
+  background: var(--grayscale-600, #212529);
+  width: 100%;
+  height: 60px;
+  padding-right: 43px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .btn-logo{
+    background: #fff;
+    color: var(--grayscale-600, #212529);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .dropdown-menu{
+    margin-top: 10px!important;
+    width: 137px;
+    border-radius: 4px;
+    padding: 8px;
+
+    li{
+      button{
+        padding: 8px;
+      }
+    }
+
+    li:hover{
+      button{
+        background: var(--primary-100, #D8E8FD);
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .dropdown-item:hover{
+    color: #0D6CF2;
+  }
+  .dropdown-item{
+    --bs-dropdown-link-active-bg: none!important;
+  }
+
+}

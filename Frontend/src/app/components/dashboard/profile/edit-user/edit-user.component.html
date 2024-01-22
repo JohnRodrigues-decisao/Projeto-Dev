@@ -1,0 +1,92 @@
+<div class="edit">
+  <div class="container">
+    <form (ngSubmit)="updateUserProfile()" [formGroup]="formProfile">
+        <div class="form-head">
+          <div class="btn-edit">
+            <img src="../../../../assets/icons/edit.svg" alt="Icone do botão de editar">
+          </div>
+          <h2>Editar perfil</h2>
+          <hr class="line">
+          <div class="camp-obg">
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+            <p>Campos obrigatórios</p>
+          </div>
+          <button routerLink="/dashboard/client">
+            <img src="../../../../assets/icons/close.svg" alt="Icone de X do botão de fechar"> 
+          </button>
+        </div>
+  
+        <div class="form-camp mb-3 mt-4">
+          <label for="inputName" class="form-label">
+            Nome
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+          </label>
+
+          <input class="form-control" id="inputName" formControlName="nome" type="text" aria-describedby="nameHelp"
+            placeholder="Insira seu nome" autocomplete="off" (input)="inputNomeChange()">
+        </div>
+
+        <div class="form-camp mb-3 mt-4">
+          <label for="email" class="form-label">
+            E-mail
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+          </label>
+
+          <input class="form-control" formControlName="email"  type="email" id="email" name="email" required aria-describedby="emailHelp"
+            placeholder="Insira seu e-mail" autocomplete="off" (input)="inputEmailChange()">
+        </div>
+
+        <div class="form-check mb-3 mt-4 form-check-box">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="checkBoxControl" (change)="toggleInput()">
+          <label class="form-check-label" for="exampleCheck1">Alterar senha</label>
+        </div>
+
+        <!-- Utilizar a classe checkend para deixar o form desativado -->
+        <div class="form-camp checked mb-3 mt-4 form-control-password"> 
+          <label for="inputPassword" class="form-label">
+            Senha atual
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+          </label>
+
+          <!--  -->
+          <input class="form-control" id="inputPassword" type="text" aria-describedby="PasswordHelp"
+            placeholder="Insira sua senha" autocomplete="off" formControlName="currentPassword" [ngClass]="{ 'error': formProfile.get('currentPassword')?.invalid && formProfile.get('currentPassword')?.touched }">
+
+          <span class="error-pass" *ngIf="formProfile.get('currentPassword')?.hasError('required') && formProfile.get('currentPassword')?.touched ">Senha inserida incorreta</span>
+        </div>
+
+        <div class="form-camp checked  mt-4">
+          <label for="InputNewPassword" class="form-label">
+            Nova senha
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+          </label>
+
+          <!--  -->
+          <input class="form-control" id="InputNewPassword" type="text" aria-describedby="ResPasswordHelp"
+            placeholder="Insira a nova senha" autocomplete="off" formControlName="newPassword" [ngClass]="{'ng-invalid error ng-touched': activeInput}">
+
+            <span class="active-span" *ngIf="activeSpan">Nova senha e confirmação de senha não conferem</span>
+
+        </div>
+
+        <div class="form-camp checked mb-3 mt-4">
+          <label for="inputConfPassword1" class="form-label">
+            Confirmar senha
+            <img src="../../../../assets/icons/asterisco.svg" alt="Icone de asterisco significando campo obrigatório">
+          </label>
+
+          <!--  -->
+          <input  class="form-control" id="inputConfPassword1" type="text" aria-describedby="ResPasswordHelp"
+            placeholder="Confirme a nova senha" autocomplete="off" formControlName="repeatPassword" [ngClass]="{'ng-invalid error ng-touched': activeInput}">
+
+          <span class="active-span" *ngIf="activeSpan">Nova senha e confirmação de senha não conferem</span>
+
+        </div>
+
+      <div class="form-btn mb-3 mt-4">
+        <button routerLink="/dashboard/client" type="button" class="btn btn-canc">Cancelar</button>
+        <button class="btn btn-safe" type="submit" [disabled]="isSubmitDisabled">Salvar</button>
+      </div> 
+    </form>
+  </div> 
+</div>

@@ -1,0 +1,191 @@
+.edit{
+  position: absolute;
+  background: rgba(23, 26, 28, 0.90);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  .container{
+    width: 455px;
+    border-radius: 8px;
+    border: 1px solid var(--grayscale-500, #2F3337);
+    background: var(--grayscale-600, #212529);
+    box-shadow: 0px 8px 20px 0px rgba(50, 53, 57, 0.20);
+    padding: 16px;
+    padding-bottom: 0;
+ 
+    form{
+      color: var(--grayscale-300, #CED4DA);
+      .form-head{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .btn-edit{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 2px solid var(--primary-300, #0D6CF2);
+          background: var(--grayscale-600, #212529);
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+
+        }
+
+        h2{
+          font-size: 16px;
+          margin: 0;
+          padding: 0;
+          margin: 0 16px;
+        }
+
+        .line{
+          width: 45px;
+          height: 2px;
+          background: #CED4DA;
+          margin-right: 16px;
+        }
+
+        .camp-obg{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 16px;
+          p{
+            margin: 0;
+            margin-left: 8px;
+            color: var(--grayscale-400, #6C757D);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+          }
+        }
+
+        button{
+          background: none;
+          border: none;
+        }
+      }
+
+      .form-camp{
+
+        input{
+          border-radius: 4px;
+          border: 1px solid var(--grayscale-400, #6C757D);
+          background: var(--grayscale-500, #2F3337);
+          color: var(--grayscale-300, #CED4DA);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+        }
+        input::placeholder {
+          color: var(--grayscale-400, #6C757D);
+
+        }
+      }
+
+      .form-camp.checked{
+        color: var(--grayscale-400, #6C757D);
+      }
+
+      .form-btn{
+        display: flex;
+        justify-content: end;
+
+        .btn-canc{
+          border-radius: 8px;
+          border: 1px solid var(--grayscale-400, #6C757D);
+          background: var(--grayscale-0, #FFF);
+          margin-right: 20px;
+        }
+
+        .btn-safe{
+          border-radius: 8px;
+          border: 1px solid var(--grayscale-400, #6C757D);
+          background: var(--grayscale-0, #FFF);
+        }
+
+        .disable{
+          border-radius: 8px;
+          background: var(--grayscale-100, #F5F7FA)!important;
+          color: var(--grayscale-300, #CED4DA)!important;
+        }
+      }
+    }
+  }
+}
+.btn.btn-safe{
+  border-radius: 8px;
+  background: var(--Primary-300, #0D6CF2)!important;
+  color: var(--Grayscale-0, #FFF)!important;
+  border: none!important;
+
+}
+
+.form-check{
+  input{
+    cursor: pointer;
+  }
+  label{
+    color: var(--Grayscale-400, #6C757D);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+  span{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding-top: 5px;
+  }
+}
+
+.form-control-password{
+  input{
+    margin-bottom: 5px;
+  }
+  
+}
+.active-span{
+  padding-top: 10px;
+  color: var(--Main-Danger-Base, #EE2D3D);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+}
+.ng-invalid.error.ng-touched{
+  border-radius: 4px!important;
+  border: 1px solid var(--Main-Danger-Base, #EE2D3D)!important;
+  background: var(--Grayscale-500, #2F3337)!important;
+  box-shadow: 0px 4px 4px 0px rgba(164, 14, 24, 0.25)!important;
+  caret-color: #EE2D3D!important;
+}
+.error-pass{
+  padding-top: 10px;
+  color: var(--Main-Danger-Base, #EE2D3D);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+}
+
+.form-check-box{
+  cursor: pointer;
+  width: 120px;
+  label{
+    cursor: pointer;
+  }
+}
+
+
+
+@media only screen and (max-width: 1400px) {
+  .edit{
+    height: 130vh;
+  }
+}

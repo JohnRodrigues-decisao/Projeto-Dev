@@ -1,0 +1,65 @@
+<div class="login">
+
+  <div class="container">
+    <form *ngIf="!loading">
+      <a class="logo-login" href="#"><img src="../../../assets/img/D.webp" alt="icone de asterisco"></a>
+
+      <h2>Criar conta</h2>
+
+      <p>Cria sua conta e desfrute de todo o sistema!</p>
+
+      <div class="mb-3 form-row">
+        <label for="name" class="form-label">Nome
+          <span class="asterisco"><img src="../../../assets/icons/asterisco.webp" alt="icone de asterisco">
+          </span>
+        </label>
+
+        <input [(ngModel)]="userName" [ngModelOptions]="{standalone: true}"  type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Insira seu nome">
+      </div>
+
+      <div class="mb-3 form-row">
+        <label for="Email1" class="form-label">E-mail
+          <span class="asterisco"><img src="../../../assets/icons/asterisco.webp" alt="icone de asterisco">
+          </span>
+        </label>
+
+        <input [(ngModel)]="userEmail" [ngModelOptions]="{standalone: true}" type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Insira seu e-mail" autocomplete="new-password">
+
+      </div>
+
+      <div class="mb-3 form-row">
+        <label for="Password" class="form-label">Senha
+          <span class="asterisco"><img src="../../../assets/icons/asterisco.webp" alt="icone de asterisco">
+          </span>
+        </label>
+
+        <input [(ngModel)]="userPassword" [ngModelOptions]="{standalone: true}" type="password" class="form-control" id="Password" placeholder="digite sua senha" autocomplete="new-password">
+      </div>
+
+      <div class="mb-3 form-row" class="conf-pass">
+        <label for="confirmPassword" class="form-label">Confirmar senha
+          <span class="asterisco"><img src="../../../assets/icons/asterisco.webp" alt="icone de asterisco">
+          </span>
+        </label>
+
+        <input [(ngModel)]="confirmPassword" [ngModelOptions]="{standalone: true}" type="password" class="form-control" id="confirmPassword" placeholder="confirme sua senha">
+      </div>
+
+      <button (click)="addUser()" type="submit" class="btn btn-primary">Criar conta</button>
+
+      <div class="obg-camp">
+        <span class="asterisco"><img src="../../../assets/icons/asterisco.webp" alt="">
+        </span>
+        <p>Campos obrigatórios</p>
+      </div>
+
+      <div class="alter-resister">
+        <p>Já possui cadastro?</p>
+        <a routerLink="/login"> Faça Log in</a>
+      </div>
+
+    </form>
+
+    <app-spinner *ngIf="loading"></app-spinner>
+  </div>
+</div>

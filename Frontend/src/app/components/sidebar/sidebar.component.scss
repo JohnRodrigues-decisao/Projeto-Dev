@@ -1,0 +1,36 @@
+.dashboard-sidebar{
+  background-color: none;
+  border-right: 1px solid var(--grayscale-500, #2F3337);
+  background: var(--grayscale-600, #212529);
+  width: 52px!important;
+  height: 100vh;
+  .logo{
+    width: 52px;
+    height: 60px;
+    background: var(--primary-300, #0D6CF2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-link{
+    border-radius: 0;
+    padding: 15px;
+  }
+
+
+
+}
+
+.active{
+  color: red;
+  border-right: 2px solid var(--primary-300, #0D6CF2);
+  background: var(--grayscale-600, #212529);
+  svg{
+    color: red;
+  }
+}
+
+.item-dashboard-user{
+  box-shadow: none;
+}
