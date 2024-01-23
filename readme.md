@@ -58,4 +58,3 @@ Feito isso utilize o seguinte comando para rodar o projeto:
 E seu projeto estará rodando na porta http://localhost:4200/
 
 Agora é só aproveitar das suas funcionalidades, o projeto está sendo melhorado a cada dia e espero que aproveite as novas atualizações. 
-=======
