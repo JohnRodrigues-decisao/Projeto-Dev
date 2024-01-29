@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, catchError, map } from 'rxjs';
 import { PessoaInterface } from 'src/app/interfaces/pessoaInterface';
+import { PessoaClienteInterface } from 'src/app/interfaces/PessoaClienteInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +13,15 @@ export class PessoaService {
   private myApiUrl: string;
 
   constructor(private http: HttpClient) {
-    this.myAppUrl = environment.endpoint; 
+    this.myAppUrl = environment.endpoint;  
     this.myApiUrl = 'pessoa/';
   }
-
+ 
   // Adicionar pessoa
   createPessoa(pessoa: PessoaInterface): Observable<any> {
     return this.http.post<any>(`${this.myAppUrl}${this.myApiUrl}`, pessoa)
     
-      .pipe(
+      .pipe( 
         map((response: any) => {
           return response
         }),
@@ -51,4 +52,9 @@ export class PessoaService {
     return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${id_pessoa}`, pessoa)
   }
 
+  // Listar pessoas e clientes combinaddos
+  getAllPessoasClientes(): Observable<PessoaClienteInterface[]> {
+    return this.http.get<PessoaClienteInterface[]>(`${this.myAppUrl}${this.myApiUrl}pessoa-cliente`);
+  }
 }
+ 

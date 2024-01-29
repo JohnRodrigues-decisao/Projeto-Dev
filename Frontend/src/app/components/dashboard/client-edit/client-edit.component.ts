@@ -1,10 +1,3 @@
-// Falta fazer:
-
-// [ ] Adicioanr o ngclass para alternar as cores do dropdowm 
-// [ ] Ativar dropdown para alterar o banco
-// [ ] Adicionar  um validador de campos para deixar o botão de submit ativo quando um campo for editado ou preenchido pela primeira vez, caso contrario, bloqueio e o usuário terá que clicar no nome representante lá em ciam.
- 
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +14,7 @@ import { Clientinterface } from 'src/app/interfaces/clientinterface';
   templateUrl: './client-edit.component.html', 
   styleUrls: ['./client-edit.component.scss']
 })
+
 export class ClientEditComponent implements OnInit{
   listClientes: Clientinterface[] = []; 
   isSubmitDisabled: boolean = false; 
@@ -33,17 +27,18 @@ export class ClientEditComponent implements OnInit{
 
   // Dropdown
   selectedStatus: { status: string } | undefined;
-  statusSituacao: string = ''
-  statuss = [
-    { status: "Ativo"},
-    { status: "Inativo" },
-    { status: "Negativado" }
-  ]; 
-
-  // Listar pessoa pelo id_pessoa
   id_pessoa: string = '';
+  
+  // Listar pessoa pelo id_pessoa
   listarPessoa: PessoaInterface[] = [];
+  
+  statusSituacao: string = '' // recebo os dados da api e
+  statuss: string[] = ["Ativo", "Inativo", "Negativado"];
 
+  atualDate: string = '';
+  newValueSituacao: string = '';
+  id_cliente: string = '';
+  
   constructor( 
     private formBuilder: FormBuilder,  
     private toastr: ToastrService,
@@ -69,10 +64,14 @@ export class ClientEditComponent implements OnInit{
 
     this.id_pessoa = aRouter.snapshot.paramMap.get('id_pessoa') || '';
 
-    // Tem um erro aqui, validar depois
     this.form.get('identificacao')?.valueChanges.subscribe((obsValue) => {
       this.validaIndentificacao(obsValue);
     });
+
+    this.formClient.get('data_cadastro')?.valueChanges.subscribe((newValue) => {
+      this.atualDate = this.converterDataFormatoString(newValue);
+    })
+    
   } 
 
   ngOnInit(): void {
@@ -80,6 +79,60 @@ export class ClientEditComponent implements OnInit{
     this.getClient(this.id_pessoa);
   }
 
+  converterDataFormatoString(dataString: string | undefined): string {
+    if (typeof dataString !== 'string') {
+      return '';
+    }
+  
+    const regexData = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    const match = dataString.match(regexData);
+  
+    if (!match) {
+      return '';
+    }
+  
+    const [, dia, mes, ano] = match;
+    const data = new Date(`${ano}-${mes}-${dia}T00:00:00Z`);
+  
+    return data.toISOString();
+  }
+
+  editPessoa() {
+    const pessoa: PessoaInterface = {
+      identificacao: this.form.value.identificacao,
+      nome: this.form.value.nome,
+      nome_fantasia: this.form.value.nome_fantasia,
+      nome_mae: this.form.value.nome_mae,
+      inscricao_municipal: this.form.value.inscricao_municipal,
+      inscricao_estadual: this.form.value.inscricao_estadual,
+    };
+
+    const cliente: Clientinterface = {
+      data_cadastro: this.atualDate,
+      situacao: this.formClient.value.situacao,
+      id_pessoa: this.id_pessoa
+    };
+
+
+    this._PessoaService.updatePessoa(this.id_pessoa, pessoa).subscribe(
+      () => {
+        this._clienteService.updateClient(this.id_cliente, cliente).subscribe(
+          () => {
+            this.showSuccess();
+            this.router.navigate([`/dashboard/client`]);
+          },
+          (error) => {
+            console.error('Erro ao cliente:', error);
+          }
+        );
+      },
+      (error) => {
+        console.error('Erro ao pessoa:', error);
+      }
+    );
+  } 
+
+  // Buscar dados da clliente com o id_pessoa
   getClient(id_pessoa: string) {
     this._clienteService.listClient(id_pessoa).subscribe((resp: Clientinterface) => {
       
@@ -88,22 +141,31 @@ export class ClientEditComponent implements OnInit{
         situacao: resp.situacao
       })
 
+      this.id_cliente = resp.id_cliente!;
       this.statusSituacao = resp.situacao;
     })
   }
 
   // Buscar dados da pessoa com o id_pessoa
-  getPessoa(id_pessoa: string){
-    this._PessoaService.getOnePessoa(id_pessoa).subscribe((resp: PessoaInterface) => {
-      this.form.patchValue({
-        nome: resp.nome,
-        identificacao: resp.identificacao,
-        nome_fantasia: resp.nome_fantasia,
-        nome_mae: resp.  nome_mae,
-        inscricao_municipal: resp.inscricao_municipal,
-        inscricao_estadual: resp.inscricao_estadual,
-      })
-    })
+  getPessoa(id_pessoa: string) {
+    this._PessoaService.getOnePessoa(id_pessoa).subscribe(
+      (resp: PessoaInterface) => {
+        
+        if (resp) {
+          this.form.patchValue({
+            nome: resp.nome,
+            identificacao: resp.identificacao,
+            nome_fantasia: resp.nome_fantasia,
+            nome_mae: resp.nome_mae,
+            inscricao_municipal: resp.inscricao_municipal,
+            inscricao_estadual: resp.inscricao_estadual,
+          });
+        }
+      }, 
+      (error) =>  {
+        console.error(`Não foi possivel listar os dados da pessoa:`, error)
+      }
+    ); 
   }
 
   validaIndentificacao(value: string): boolean {
@@ -152,28 +214,9 @@ export class ClientEditComponent implements OnInit{
           this.isSubmitDisabled = true;
         }
       });
-    } else {
-      console.log('Identificação inválida:', value);
-    }
+    } 
+
     return this.cpfActive || this.cnpjActive;
-  }
-
-  editPessoa(){
-  const pessoa: PessoaInterface = {
-      identificacao: this.form.value.identificacao,
-      nome: this.form.value.nome,
-      nome_fantasia: this.form.value.nome_fantasia,
-      nome_mae: this.form.value.nome_mae,
-      inscricao_municipal: this.form.value.inscricao_municipal,
-      inscricao_estadual: this.form.value.inscricao_estadual,
-    };
-
-    this._PessoaService.updatePessoa(this.id_pessoa, pessoa).subscribe(() => {
-      this.showSuccess();
-      this.isSubmitDisabled = false;
-    })
-
-    this.router.navigate([`dashboard/client/location/${this.id_pessoa}`]);
   }
 
   /* Alerta */

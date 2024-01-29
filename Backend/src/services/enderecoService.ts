@@ -120,6 +120,8 @@ export async function desabilitarIsPrincipalService(id_pessoa: string): Promise<
   }
 }
 
+
+
 // valida se existe endereços iguais antes de realizar o cadastro
 export async function getEnderecoByDetails(details: Partial<EnderecoModel>): Promise<EnderecoModel | null> {
   try {

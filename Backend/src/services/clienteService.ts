@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import { ClienteInterface } from "../interfaces/clienteInterface";
 import { ClienteModel } from "../models/clienteModel";
 import { PessoaModel } from "../models/pessoaModel";
+import { representanteModel } from "../models/representanteModel";
 
 // Serviço para criar um cliente
 export async function postClient(cliente: ClienteInterface) {
@@ -42,6 +43,31 @@ export async function putClient(
 }
 
 // Serviço para deletar o cliente
-export async function deleteCliente(id_pessoa) {
-  return await ClienteModel.destroy({ where: { id_pessoa } });
-};
+// export async function deleteCliente(id_pessoa) {
+//   return await ClienteModel.destroy({ where: { id_pessoa } });
+// };
+
+export async function deleteCliente(id_pessoa: string) {
+  try {
+    // Verifica se a pessoa possui um representante
+    const representante = await representanteModel.findOne({
+      where: { id_pessoa },
+    });
+
+    if (representante) {
+      return { success: false, message: 'Esta pessoa tem um representante cadastrado. Não é possivel deleta-lá.' };
+    }
+
+    // Se a pessoa não tem um representante, então pode ser deletada
+    const deletedClient = await ClienteModel.destroy({ where: { id_pessoa } });
+
+    if (deletedClient > 0) {
+      return { success: true, message: 'Pessoa deletada com sucesso' };
+    } else {
+      return { success: false, message: 'Falha ao deletar a pessoa' };
+    } 
+  } catch (error) {
+    console.error('Erro ao deletar pessoa:', error);
+    return { success: false, message: 'Erro ao deletar a pessoa' };
+  }
+}

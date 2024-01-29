@@ -18,7 +18,12 @@ export class ClientRepresentativesComponent implements OnInit{
   AddRepress: boolean = false;
   EditRepress: boolean = false; 
 
-  listRepress: representanteInterface[] = [];
+  isSubmitDisabled: boolean = true;
+  cpfActive: boolean = false; 
+  cnpjActive: boolean = false;
+
+  listRepress: representanteInterface[] = []; 
+
   listDadosRepress: representanteInterface[] = [];
   popupDeleteRepress: boolean = false;
  
@@ -26,6 +31,8 @@ export class ClientRepresentativesComponent implements OnInit{
   formRepressEdit: FormGroup;
   id_pessoa: string = '';
   id_representante: string = '';
+
+  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +44,11 @@ export class ClientRepresentativesComponent implements OnInit{
     this.formRepress = this.formBuilder.group({
       identificacao:  ['', Validators.required],
       nome: ['', Validators.required],
-      id_pessoa:  ['', Validators.required]
+      id_pessoa:  ['']
+    });
+    
+    this.formRepress.get('identificacao')?.valueChanges.subscribe((obsValue) => {
+      this.validaIndentificacao(obsValue);
     });
  
     this.id_pessoa = aRouter.snapshot.paramMap.get('id_pessoa') || '';
@@ -47,72 +58,93 @@ export class ClientRepresentativesComponent implements OnInit{
       nome: ['', Validators.required],
       id_pessoa:  ['', Validators.required]
     });
-  } 
+
+  
+  }  
 
   ngOnInit(): void {
-    this.getAllRepress(); 
+    this.getAllRepresIdPessoa(this.id_pessoa);
   }
 
   // Listar todos os representantes
-  getAllRepress(){
-    this._representanteService.getAllRepres().subscribe((data) => {
-      this.listRepress = data;
-    })
+  getAllRepresIdPessoa(id_pessoa: string) {
+    this._representanteService.getAllRepresIdPessoa(id_pessoa).subscribe(
+      (data) => {
+        this.listRepress = data;
+      },
+      (error) => {
+        console.error("Erro na requisição:", error);
+      }
+    );
+  }
+
+  // Adicionar um representantes
+  addRepress() {
+    const representante: representanteInterface = {
+      nome: this.formRepress.value.nome,
+      identificacao: this.formRepress.value.identificacao,
+      id_pessoa: this.id_pessoa
+    };
+  
+    if (this.camposObrigatoriosPreenchidos()) {
+      this._representanteService.createRepress(representante).subscribe(
+        (respResponse) => {
+          this.getAllRepresIdPessoa(this.id_pessoa);
+          this.showSuccessAdd();
+          this.showAddRepress();
+          this.formRepress.reset();
+          return respResponse; 
+        },
+        (respError) => {
+          console.error('Erro ao adicionar cliente:', respError);
+        }
+      );
+    } else {
+      console.log('Preencha todos os campos obrigatórios');
+    }
+  }
+
+  camposObrigatoriosPreenchidos(): boolean {
+    const nome = this.formRepress.value.nome;
+    const identificacao = this.formRepress.value.identificacao;
+  
+    return nome !== null && nome !== '' && identificacao !== null && identificacao !== '';
+  }
+
+  validaIndentificacao(value: string): boolean {
+    this.cpfActive = value.length === 11;
+    this.cnpjActive = value.length === 14;
+
+    if (this.cpfActive) {
+        this.formRepress.get('nome')?.valueChanges.subscribe((nomeValue) => {
+          if (nomeValue !== '') {
+            this.isSubmitDisabled = false;
+          } else {
+            this.isSubmitDisabled = true;
+          }
+        });
+    } else if (this.cnpjActive) {
+      this.formRepress.get('nome')?.valueChanges.subscribe((nomeValue) => {
+        if (nomeValue !== '') {       
+          this.isSubmitDisabled = false;
+        } else {
+          this.isSubmitDisabled = true;
+        }
+      })} else {
+      console.log('Identificação inválida:', value);
+    }
+    return this.cpfActive || this.cnpjActive;
   }
 
   // Deletar um representantes
   deleteRepress(id_representante: string) {
     this._representanteService.deleteRepress(id_representante).subscribe(() => {
       this.showDeleteRepress();
-      this.getAllRepress();
+      this.getAllRepresIdPessoa(this.id_pessoa);
       this.showSuccessDelete();
     })     
-  }
- 
-  // Adicionar um representantes
-  addRepress(){
-    const representante: representanteInterface = {
-      nome: this.formRepress.value.nome,
-      identificacao: this.formRepress.value.identificacao,
-      id_pessoa: this.id_pessoa
-    }
+  } 
 
-    this._representanteService.createRepress(representante).subscribe((respResponse) => {
-      console.log(respResponse)
-      this.getAllRepress();
-      this.showSuccessAdd();
-      this.showAddRepress();
-      return respResponse;
-    },
-    (respError) => {
-      console.error('Erro ao adicionar cliente:', respError)
-    }
-    )
-  }
-
-  // Buscar dados de um representante pelo id_representante
-  getRepressIdEdit(id_representante: string) {
-    
-    this.EditRepress = !this.EditRepress;
-    this.ContainerMain = !this.ContainerMain;
-
-    this.id_representante = id_representante;
-
-    this._representanteService.getRepressId(id_representante).subscribe((resp) => {
-      // Atribui os dados diretamente a this.listDadosRepress
-      this.listDadosRepress = [resp];
-      
-      this.formRepressEdit.patchValue({
-        identificacao: resp.identificacao,
-        nome: resp.nome
-      })
-  
-      // Exibe no console para verificar
-      console.log(`Aqui é a resposta: ${this.listDadosRepress}`);
-    });
-
-  }
-  
   // Editar um representante
   editRepress(){
     const representante: representanteInterface = {
@@ -128,12 +160,46 @@ export class ClientRepresentativesComponent implements OnInit{
     this.showSuccessEdit();
     this.EditRepress = !this.EditRepress;
     this.ContainerMain = !this.ContainerMain;
-    this.getAllRepress();
+    this.getAllRepresIdPessoa(this.id_pessoa);
   }
  
- 
-  /* Show */
+  // Buscar dados de um representante pelo id_representante
+  getRepressIdEdit(id_representante: string) {
+    this.EditRepress = !this.EditRepress;
+    this.ContainerMain = !this.ContainerMain;
+    this.id_representante = id_representante;
+    
+    this._representanteService.getRepressId(id_representante).subscribe((resp) => {
+      this.listDadosRepress = [resp];
+      this.formRepressEdit.patchValue({
+        identificacao: resp.identificacao,
+        nome: resp.nome
+      })
+    });
+    
+    
+    this.getAllRepresIdPessoa(this.id_pessoa);
+  } 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  /* Show */
   capterIdRepress(id_representante: string){
     this.id_representante = id_representante;
     this.EditRepress = !this.EditRepress;
@@ -156,9 +222,7 @@ export class ClientRepresentativesComponent implements OnInit{
     console.log(this.formRepress)
   }
 
-
   /* Alerts */
-
   showSuccessAdd() {
     const options = {
       closeButton: true,
@@ -188,11 +252,22 @@ export class ClientRepresentativesComponent implements OnInit{
       closeButton: true,
       progressBar: true,
       enableHtml: true,
+      timeOut: 2000,
       icon: '<svg class="IConChecked"></svg>',
     };
 
-    this.toastr.error('Representante excluído com sucesso!', undefined, options);
+    this.toastr.success('Representante excluído com sucesso!', undefined, options);
   }
-  
+
+  // showSuccessDelete() {
+  //   const options = {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     enableHtml: true,
+  //     icon: '<svg class="IConChecked"></svg>',
+  //   };
+
+  //   this.toastr.error('Representante excluído com sucesso!', undefined, options);
+  // }
 }
-  
+   

@@ -1,7 +1,3 @@
-// [ ] Adicionar o id_conta dinâmico
-
-import { Injectable } from '@angular/core';
-
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -25,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   listUserProfile: UserInterface[]= [];
   
-  tokenObj: any; // Ou use um tipo específico conforme a estrutura do seu objeto
+  tokenObj: any;
   idConta: string ='';
   nome_conta: string = '';
 
@@ -33,17 +29,14 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private _userInterface: UserService
     ){}
- 
 
     ngOnInit(): void {
       this.loadingToken();
-      console.log(this.idConta);  // Certifique-se de que this.idConta está definido
     
       if (this.idConta !== null) {
         this.getUser(this.idConta);
       } else {
         console.warn('ID da conta é nulo.');
-        // Trate conforme necessário quando o ID da conta é nulo.
       }
 
       this.sortLetters(this.nome_conta);
@@ -68,10 +61,8 @@ export class HeaderComponent implements OnInit {
   getUser(id_conta: string){
     this._userInterface.getUserService(id_conta).subscribe((data: UserInterface) => {
       this.listUserProfile = [data];
-      console.log(data)
     })
   }
-
 
   loadingToken(): void {
     const token = localStorage.getItem('token');

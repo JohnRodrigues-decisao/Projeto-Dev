@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { createPessoa, destroyPessoa, editPessoa, listPessoa, listPessoas } from "../controllers/pessoaController";
+import { PessoaCliente, createPessoa, destroyPessoa, /* destroyPessoa, */ editPessoa, listPessoa, listPessoas } from "../controllers/pessoaController";
 
 const router = Router();
 
 // Rota para Listar todas as pessoa
 router.get("/", listPessoas);
+
+// Rota para Listar todas as pessoa
+router.get("/pessoa-cliente", PessoaCliente);
 
 // Rota para Listar uma pessoa
 router.get("/:id_pessoa", listPessoa);

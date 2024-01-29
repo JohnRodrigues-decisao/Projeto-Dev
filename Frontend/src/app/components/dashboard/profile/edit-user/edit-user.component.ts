@@ -73,7 +73,6 @@ export class EditUserComponent implements OnInit {
     
   
     if (repeatPassword) {
-      // Verifica se os valores são iguais
       if (newPassword !== repeatPassword) {
         this.formProfile.get('repeatPassword')?.setErrors({ customError: true });
         this.activeSpan = true;
@@ -96,7 +95,7 @@ export class EditUserComponent implements OnInit {
     this.isInputDisabled = !this.isInputDisabled;
     this.isSubmitDisabled = true;
     
-    if (this.isInputDisabled === false) {  // Corrigido para usar alterPassword
+    if (this.isInputDisabled === false) {  
       this.formProfile.get('currentPassword')?.enable();
       this.formProfile.get('newPassword')?.enable();
       this.formProfile.get('repeatPassword')?.enable();

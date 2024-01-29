@@ -44,13 +44,11 @@ export class ClientLocationComponent implements OnInit {
   listTellEdit: TelefoneInterface[] = [];  
   
   // Email
-
   modalAddEmailBox: boolean = false;
   formEmail: FormGroup;
   listEmail: EmailInterface[] = [];
   idEmail: string = '';
   modalDeleteemail: boolean = false;
-
   formEmailEdit: FormGroup;
   modalEditEmailBox: boolean = false;
   listEmailEdit: EmailInterface[] = [];
@@ -142,7 +140,7 @@ export class ClientLocationComponent implements OnInit {
   
   characterLimits() {
     const address = {
-      cep: '1234dfsfsdfsdfsd567890' // Seu CEP completo
+      cep: '1234dfsfsdfsdfsd567890'
     };
     const truncatedCep = address.cep.length > 10 ? address.cep.slice(0, 10) + '...' : address.cep;
   }
@@ -167,13 +165,10 @@ export class ClientLocationComponent implements OnInit {
       id_pessoa: this.id_pessoa
     }
   
-    // Primeira chamada para desabilitar is_principal
     this._addressService.desabilitaIsprincipal(this.id_pessoa, endereco).subscribe(
       () => {
         console.log('Todos os is_principais desativados!!!');
-  
-        // Segunda chamada para adicionar endereço
-        this._addressService.createAddress(endereco).subscribe(
+          this._addressService.createAddress(endereco).subscribe(
           (data) => {
             this.getAllEnderecos(this.id_pessoa);
             this.alertSuccessEnderecoAdd();
@@ -182,9 +177,7 @@ export class ClientLocationComponent implements OnInit {
           },
           (error) => {
             console.error('Erro ao adicionar endereço:', error);
-  
-            // Aqui você pode mostrar um alerta para o usuário
-            this.alertErrorEnderecoAdd();
+              this.alertErrorEnderecoAdd();
           }
         );
 
@@ -197,7 +190,6 @@ export class ClientLocationComponent implements OnInit {
     this.getAllEnderecos(this.id_pessoa);
   }
 
-  // Algumas coisa está errada no editar
   editEndereco() {
     const endereco: EnderecoInterface = {
       cep: this.formEnderecoEdit.value.cep,
@@ -248,13 +240,11 @@ export class ClientLocationComponent implements OnInit {
   }
 
   formatarTelefone(numero: string): string {
-    const numeroLimpo = numero.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    const numeroLimpo = numero.replace(/\D/g, ''); 
 
     if (numeroLimpo.length <= 10) {
-      // Formatar telefone fixo
       return `(${numeroLimpo.slice(0, 2)}) ${numeroLimpo.slice(2, 6)}-${numeroLimpo.slice(6, 10)}`;
     } else {
-      // Formatar celular
       return `(${numeroLimpo.slice(0, 2)}) 9${numeroLimpo.slice(2, 7)}-${numeroLimpo.slice(7, 11)}`;
     }
   }
@@ -291,7 +281,6 @@ export class ClientLocationComponent implements OnInit {
   }
 
   editTell() {
-    // Certifique-se de que this.id_telefone esteja definido antes de chamar editTell
     if (this.id_telefone) {
       const telefone: TelefoneInterface ={ 
         numero: this.formTellEdit.value.numero, 
@@ -327,8 +316,6 @@ export class ClientLocationComponent implements OnInit {
   }
 
 // Email
-
-  /* listar dados de um endereço pelo id_pessoa */
   getAllEmail(id_pessoa: string) {
     this._emailService.getEmail(id_pessoa).subscribe(
       (data) => {
@@ -462,7 +449,6 @@ export class ClientLocationComponent implements OnInit {
 
     this._addressService.getEnderecoId(id_endereco).subscribe((resp) => {
       this.listEnderecoEdit = [resp];
-    
       this.formEnderecoEdit.patchValue({
         cep: resp.cep,
         numero: resp.numero,
@@ -491,14 +477,13 @@ export class ClientLocationComponent implements OnInit {
   }
 
   /* Show telefone */
-
   showAddTelefone(){
     this.modalAddTellBox = !this.modalAddTellBox;
     this.formTell.reset();
   }
 
   showEditTelefone(id_telefone: string) {
-    this.id_telefone = id_telefone; // Atribui o valor do parâmetro à propriedade
+    this.id_telefone = id_telefone; 
     this.modalEditTellBox = !this.modalEditTellBox;
   
     this._telefoneService.getListDadosTelefone(id_telefone).subscribe((resp) => {
@@ -531,24 +516,18 @@ export class ClientLocationComponent implements OnInit {
 
   showAddEmail() {
     if (!this.modalEditEmailBox) {
-      // Se o modal de edição não estiver aberto, abra o modal de adição
       this.modalAddEmailBox = !this.modalAddEmailBox;
-      // Desabilite o modal de edição
       this.modalEditEmailBox = false;
     }
   }
   
   showEmailEditId() {
     if (!this.modalAddEmailBox) {
-      // Se o modal de adição não estiver aberto, abra o modal de edição
       this.modalEditEmailBox = !this.modalEditEmailBox;
-      // Desabilite o modal de adição
       this.modalAddEmailBox = false;
     }
   }
   
-  
-
   // Alerts
   
   /* Endereço */
@@ -580,11 +559,23 @@ export class ClientLocationComponent implements OnInit {
       closeButton: true,
       progressBar: true,
       enableHtml: true,
+      timeOut: 2000,
       icon: '<svg class="IConChecked"></svg>',
     };
 
-    this.toastr.error('Endereço excluído com sucesso!', undefined, options);
+    this.toastr.success('Endereço excluído com sucesso!', undefined, options);
   }
+
+  // alertSuccessEnderecoDelete() {
+  //   const options = {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     enableHtml: true,
+  //     icon: '<svg class="IConChecked"></svg>',
+  //   };
+
+  //   this.toastr.error('Endereço excluído com sucesso!', undefined, options);
+  // }
 
   alertSuccessEnderecoEdit() {
     const options = {

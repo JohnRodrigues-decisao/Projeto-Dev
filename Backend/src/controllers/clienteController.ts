@@ -27,7 +27,6 @@ export async function createClient(req: Request, res: Response) {
 }
 
 // lister todos os cliente 
-
 export async function listarClients(_, res: Response) {
     try {
         const clientes = await getClients();
@@ -42,24 +41,28 @@ export async function listarClients(_, res: Response) {
     } catch (error) {
         return res.json(`Error: ${error}`);
     }
-  }
+}
 
 // lister um cliente // Nem vou usar
 export async function listarClient(req: Request, res: Response) {
-      const { id_cliente } = req.params;
-      const client = await ClienteModel.findByPk(id_cliente);
+      try {
+            const { id_cliente } = req.params;
+            const client = await ClienteModel.findByPk(id_cliente);
 
-      if (client) {
-            // Formatando a data_cadastro se existir
-            if (client.dataValues && client.dataValues.data_cadastro) {
-                  client.dataValues.data_cadastro = format(new Date(client.dataValues.data_cadastro), 'dd/MM/yyyy');
+            if (client) {
+                  // Formatando a data_cadastro se existir
+                  if (client.dataValues && client.dataValues.data_cadastro) {
+                        client.dataValues.data_cadastro = format(new Date(client.dataValues.data_cadastro), 'dd/MM/yyyy');
+                  }
+                  
+                  res.send(client);
+            } else {
+                  res.status(404).json({
+                        msg: `Erro ao listar o cliente com esse id: ${id_cliente}`,
+                  });
             }
-            
-            res.send(client);
-      } else {
-            res.status(404).json({
-                  msg: `Erro ao listar o cliente com esse id: ${id_cliente}`,
-            });
+      } catch (error) {
+            return res.json("Error ao realizar a requisição.");
       }
 }
 
@@ -82,24 +85,28 @@ export async function listarClientPessoa(req: Request, res: Response) {
       }
 }
 
-// editar UM cliente
+// editar um cliente
 export async function editClient(req: Request, res: Response) {
-      const { id_cliente } = req.params;
-      const { data_cadastro, situacao, id_pessoa } = req.body;
+      try {
+            const { id_cliente } = req.params;
+            const { data_cadastro, situacao, id_pessoa } = req.body;
 
-      const newClientDate = await putClient(
-            id_cliente,
-            data_cadastro, 
-            situacao, 
-            id_pessoa
-      );
+            const newClientDate = await putClient(
+                  id_cliente,
+                  data_cadastro, 
+                  situacao, 
+                  id_pessoa
+            );
 
-      if (newClientDate[0] === 1) {
-            return res.json({ msg: "Data do cliente alterada com sucesso!👌" });
-      } else {
-            return res.json({
-            msg: "Cliente não encontrado, operação não realizada!💃",
-            });
+            if (newClientDate[0] === 1) {
+                  return res.json({ msg: "Data do cliente alterada com sucesso!👌" });
+            } else {
+                  return res.json({
+                  msg: "Cliente não encontrado, operação não realizada!💃",
+                  });
+            }
+      } catch (error) {
+            return res.json("Error ao realizar a requisição.");
       }
 }
 

@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'dashboard/client/location/:id_pessoa', component: ClientLocationComponent, canActivate: [authGuard]},
   { path: 'dashboard/client/repres/:id_pessoa', component: ClientRepresentativesComponent, canActivate: [authGuard]},
 
-  // { path: '**', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
  ];
 
 @NgModule({

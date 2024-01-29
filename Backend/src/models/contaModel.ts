@@ -9,12 +9,12 @@ export class ContaModel extends Model {
       static initialization(db: Sequelize) {
             this.init(
                   {
-                  id_conta: {
+                  id_conta: { 
                         type: DataTypes.UUID,
-                        defaultValue: DataTypes.UUIDV4,
+                        defaultValue: DataTypes.UUIDV4, 
                         allowNull: false,
                         primaryKey: true,
-                  },
+                  }, 
                   nome: {
                         type: DataTypes.STRING,
                         allowNull: false,

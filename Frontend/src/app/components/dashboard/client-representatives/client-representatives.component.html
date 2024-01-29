@@ -65,7 +65,7 @@
 
                             <td class="buttons-rep">
                               <div class="body-icons">
-                                <a class="edit" (click)="getRepressIdEdit(repress.id_representante!)">
+                                <a class="edit" (click)="getRepressIdEdit(repress.id_representante!)"> <!--  -->
                                   <img src="../../../assets/icons/edit.svg" alt="Editar o o cliente">
                                 </a>
                                 <a class="delete" (click)="showDeleteRepress()">
@@ -145,6 +145,7 @@
                       formControlName="identificacao"
                       [ngClass]="{ 'error': formRepress.get('identificacao')?.invalid && formRepress.get('identificacao')?.touched }"
                       required
+                    
                     >
 
                     <span *ngIf="formRepress.get('identificacao')?.hasError('required') && formRepress.get('identificacao')?.touched ">Digite um CNPJ/CPF válido.</span>
@@ -165,14 +166,14 @@
                       formControlName="nome"
                       [ngClass]="{ 'error': formRepress.get('nome')?.invalid && formRepress.get('nome')?.touched }"
                     >
-                  </div>
+                    <span *ngIf="formRepress.get('nome')?.hasError('required') && formRepress.get('nome')?.touched ">Insira um nome para seu cliente</span>
 
-                  <span *ngIf="formRepress.get('nome')?.hasError('required') && formRepress.get('nome')?.touched">Digite um nome válido.</span>
+                  </div>
                 </div>
 
                 <div class="form-btn">
                   <button (click)="showAddRepress()" type="button" class="btn btn-canc">Cancelar</button>
-                  <button (click)="addRepress()" type="submit" class="btn btn-safe">Salvar cliente</button>
+                  <button (click)="addRepress()" type="submit" class="btn btn-safe" [disabled]="isSubmitDisabled">Salvar cliente</button>  <!--  -->
                 </div>
 
               </form> 
@@ -180,7 +181,7 @@
 
              <!-- Componente de Editar de um representante -->
              <div class="representative-add" *ngIf="EditRepress">
-              <form [formGroup]="formRepressEdit" (ngSubmit)="editRepress()">
+              <form [formGroup]="formRepressEdit" > <!-- (ngSubmit)="editRepress()" -->
                 <!-- Title -->
                 <div>
                   <div class="breadcrumb">
@@ -239,7 +240,7 @@
 
                 <div class="form-btn">
                   <button (click)="showEditRepress()" type="button" class="btn btn-canc">Cancelar</button>
-                  <button  (click)="editRepress()" type="submit" class="btn btn-safe">Salvar cliente</button>
+                  <button [ngClass]="{'btn-disable': !camposObrigatoriosPreenchidos()}" (click)="editRepress()" type="submit" class="btn btn-safe">Salvar representante</button> <!--  -->
                 </div>
 
               </form>
@@ -247,15 +248,15 @@
 
             
             <div class="aside">
-                <div class="aside-item">
-                <a routerLink="dashboard/client/add">Dados cadastrais</a>
-                </div>
-                <div class="aside-item">
-                <a routerLink="/dashboard/client/local">Localização</a>
-                </div>
-                <div class="aside-item active">
-                <a routerLink="/dashboard/client/repres">Representantes</a>
-                </div>
+              <div class="aside-item">
+                <a routerLink="/dashboard/client/edit/{{ id_pessoa }}">Dados cadastrais</a>
+              </div>
+              <div class="aside-item">
+                <a routerLink="/dashboard/client/location/{{ id_pessoa }}">Localização</a>
+              </div>
+              <div class="aside-item active">
+                <a routerLink="/dashboard/client/repres/{{ id_pessoa }}">Representantes</a>
+              </div>
             </div>
           </div>
           <app-footer></app-footer>

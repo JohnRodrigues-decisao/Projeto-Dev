@@ -235,7 +235,7 @@
           </div>
 
           <div class="form-btn mb-3 mt-4">
-            <button type="button" class="btn btn-canc">Cancelar</button>
+            <button routerLink="/dashboard/client/edit/{{ id_pessoa }}" type="button" class="btn btn-canc">Cancelar</button>
             <button routerLink="/dashboard/client/repres/{{ id_pessoa }}" type="button" class="btn btn-safe">Salvar cliente</button>
           </div>
         </form>
@@ -244,14 +244,14 @@
 
       <!-- Sidebar -->
       <div class="aside">
-        <div class="aside-item ">
-          <a>Dados cadastrais</a>
+        <div class="aside-item">
+          <a routerLink="/dashboard/client/edit/{{ id_pessoa }}">Dados cadastrais</a>
         </div>
         <div class="aside-item active">
-          <a>Localização</a>
+          <a routerLink="/dashboard/client/location/{{ id_pessoa }}">Localização</a>
         </div>
         <div class="aside-item">
-          <a>Representantes</a>
+          <a routerLink="/dashboard/client/repres/{{ id_pessoa }}">Representantes</a>
         </div>
       </div>
 

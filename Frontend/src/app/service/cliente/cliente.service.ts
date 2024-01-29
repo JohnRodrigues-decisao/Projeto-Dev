@@ -22,12 +22,6 @@ export class ClienteService {
     return this.http.get<Clientinterface[]>(`${this.myAppUrl}${this.myApiUrl}`);
   }
 
-
-
-
-
-
-
   // Cria cliente
   createCliente(cliente: Clientinterface): Observable<any> {
     return this.http.post<any>(`${this.myAppUrl}${this.myApiUrl}`, cliente)
@@ -38,9 +32,13 @@ export class ClienteService {
     return this.http.get<Clientinterface>(`${this.myAppUrl}${this.myApiUrl}${id_pessoa}`);
   }
 
+  updateClient(id_cliente: string, cliente: Clientinterface): Observable<void> {
+    return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${id_cliente}`, cliente);
+  }
+
   // Deletar cliente
   deleteCliente(id_pessoa: string): Observable<void> {
     return this.http.delete<void>(`${this.myAppUrl}${this.myApiUrl}${id_pessoa}`);
   }
 }
- 
+  

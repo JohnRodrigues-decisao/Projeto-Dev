@@ -30,7 +30,6 @@ export class RegisterComponent implements OnInit {
 
   /* Adicionar um novo usuário */
   addUser() {
-    // Validar se os valores estão corretos
     if (
       this.userName == '' ||
       this.userEmail == '' ||
@@ -41,19 +40,16 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    // Validar se o e-mail é válido
     if (!this.validarEmail()) {
       this.toastr.error('E-mail inválido!');
       return;
     }
 
-    // Validar se as senhas são iguais
     if (this.userPassword != this.confirmPassword) {
       this.toastr.error('As senhas devem ser iguais');
       return;
     }
 
-    // Criar o objeto
     const user: UserInterface = {
       nome: this.userName,
       email: this.userEmail,
@@ -76,10 +72,7 @@ export class RegisterComponent implements OnInit {
 
   // Função para validar o e-mail
   validarEmail(): boolean {
-    // Padrão de expressão regular para validar e-mails
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Testa se o e-mail corresponde ao padrão
     return emailRegex.test(this.userEmail);
   }
 

@@ -31,10 +31,6 @@ export class EmailService {
     return this.http.get<EmailInterface>(`${this.myAppUrl}${this.myApiUrl}list/${id_email}`);
   }
 
-  // getEnderecoId(id_endereco: string): Observable<EnderecoInterface> {
-  //   return this.http.get<EnderecoInterface>(`${this.myAppUrl}${this.myApiUrl}find/${id_endereco}`);
-  // }
-  
   // Deletar um endereço
   deleteEmail(id_email: string): Observable<EmailInterface>{
     return this.http.delete<EmailInterface>(`${this.myAppUrl}${this.myApiUrl}${id_email}`);
@@ -44,9 +40,4 @@ export class EmailService {
   updateEmail(id_email: string, email: EmailInterface): Observable<void> {
     return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${id_email}`, email)
   }
-
-  // Desabilitar todos os is_principal pelo id_pessoa
-  // desabilitaIsprincipal(id_endereco: string, address: EnderecoInterface): Observable<void> {
-  //   return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}isprincipal/${id_endereco}`, address)
-  // }
 }

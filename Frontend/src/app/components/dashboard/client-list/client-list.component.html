@@ -5,22 +5,19 @@
 
 </div> 
 
-  <div class="dash-body-No" *ngIf="!listPessoas || listPessoas.length === 0">
+  <div class="dash-body-No" *ngIf="!listPessoaClient || listPessoaClient.length === 0">
     <div class="box-body">
       <img src="../../../assets/icons/sem-clientes.svg" alt="">
       <h2 class="h5">Nenhum cliente cadastrado!</h2>
     </div> 
   </div>
 
-  <div class="dash-body-Ye " *ngIf="listPessoas && listPessoas.length > 0">
+  <div class="dash-body-Ye " *ngIf="listPessoaClient && listPessoaClient.length > 0">
     <table class="table">
 
       <thead>   
         <tr class="table-header">
-          <th class="col-8">
-            Nome - CPF/CNPJ 
-
-          </th> 
+          <th class="col-8">Nome - CPF/CNPJ</th> 
 
           <th class="col-2 text-center">Situação</th>
 
@@ -30,58 +27,54 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let pessoa of listPessoas" class="table-body">
+        <tr *ngFor="let dados of listPessoaClient" class="table-body">
           <td>
             <div class="name">
               <p>
-                {{ pessoa.nome }}
+                {{ dados.nome }} 
               </p>
-              <p>{{ pessoa.identificacao }}</p>
+              <p>{{ formatarCpfCnpj(dados.identificacao) }}</p>
             </div>
           </td>
 
           <td>
             <div class="Situacao-btn text-start"> 
-
-              <div class="btn-ativo ">
-                Ativo
+              <div [ngClass]="{'btn-ativo': dados.cliente?.situacao === 'Ativo', 'none': dados.cliente?.situacao !== 'Ativo'}">
+                {{ dados.cliente?.situacao }}
               </div>
-
-              <div class="btn-negative none">
+              <div [ngClass]="{'btn-negative': dados.cliente?.situacao === 'Negativado', 'none': dados.cliente?.situacao !== 'Negativado'}">
                 Negativo
               </div>
-
-              <div class="btn-inativo none">
+              <div [ngClass]="{'btn-inativo': dados.cliente?.situacao === 'Inativo', 'none': dados.cliente?.situacao !== 'Inativo'}">
                 Inativo
               </div>
-
             </div>
           </td>
 
           <td class="date">
             <div>
-              28/06/1998
+              {{ dados.cliente?.data_cadastro | date:'dd/MM/yyyy' }}
             </div>
           </td>
-
+ 
           <td> 
             <div class="body-icons">
-              <a class="edit" routerLink="/dashboard/client/edit/{{ pessoa.id_pessoa }}">
+              <a class="edit" routerLink="/dashboard/client/edit/{{ dados.id_pessoa }}">
                 <img src="../../../assets/icons/edit.svg" alt="Editar o o cliente">
               </a>
-              <a class="delete" (click)="toggleBlock()">
+              <a class="delete" (click)="alterDeletePessoa()">
                 <img src="../../../assets/icons/delete.svg" alt="Apagar o cliente">
               </a>
             </div>
           </td>
 
           <!-- Confirmar exclusão -->
-          <div class="client-delete" [style.display]="mostrarBloco ? 'flex' : 'none'">
+          <div class="client-delete" *ngIf="showDeletePessoa">
             <div class="card">
 
               <div class="delete-header">
                 <h3 class="card-header">Excluir cliente?</h3>
-                <span (click)="toggleBlock()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
+                <span (click)="alterDeletePessoa()"><img src="../../../../assets/icons/alertClose.svg" alt=""></span>
               </div>
 
               <div class="delete-body">
@@ -91,8 +84,8 @@
                 </div>
 
                 <div class="delete-buttons">
-                  <a class="btn-cancel" (click)="toggleBlock()">Cancelar</a>
-                  <button class="btn-del" (click)="deletePessoa(pessoa.id_pessoa!)">Excluir</button>
+                  <a class="btn-cancel" (click)="alterDeletePessoa()">Cancelar</a>
+                  <button class="btn-del" (click)="deletePessoa(dados.id_pessoa)">Excluir</button>
                 </div>
               </div>
 

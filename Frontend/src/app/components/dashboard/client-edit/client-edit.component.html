@@ -27,15 +27,14 @@
                   </div>
                   <p>Campos obrigatórios</p>
                 </div>
-               
-                <div class="dropdown-status" [formGroup]="formClient">
-                  <select class="status-select" id="dropdown" formControlName="situacao">
-                    <option class="status-option" *ngFor="let status of statuss" [ngValue]="status.status">
-                      <div class="status-div">Situação: <span>{{ status.status }}</span></div>
+            
+                <form class="dropdown-status" [formGroup]="formClient">
+                  <select class="status-select" id="status" formControlName="situacao">
+                    <option class="status-option" *ngFor="let status of statuss" [value]="status">
+                      <div class="status-div">Situação: <span>{{ status }}</span></div>
                     </option>
                   </select>
-                </div>
-          
+                </form>
             </div> 
   
             <!-- form body -->
@@ -81,7 +80,7 @@
                     
                   >
     
-                  <span *ngIf="form.get('identificacao')?.hasError('required') && form.get('identificacao')?.touched ">Digite um CNPJ/CPF válido.</span>
+                  <span *ngIf="form.get('identificacao')?.hasError('required') && form.get('identificacao')?.touched">Digite um CNPJ/CPF válido.</span>
                 </div>
   
               </div>
@@ -100,7 +99,7 @@
                     class="form-control"  
                     id="exampleInputName" 
                     aria-describedby="nameHelp"
-                    placeholder="Insira seu Nome" 
+                    placeholder="Insira seu nome" 
                     [ngClass]="{ 'error': form.get('nome')?.invalid && form.get('nome')?.touched }"
                     >
   
@@ -194,13 +193,13 @@
   
         <div class="aside">
           <div class="aside-item active">
-            <a routerLink="dashboard/client/add">Dados cadastrais</a>
+            <a>Dados cadastrais</a>
           </div>
           <div class="aside-item">
             <a routerLink="/dashboard/client/location/{{ id_pessoa }}">Localização</a>
           </div>
           <div class="aside-item">
-            <a routerLink="/dashboard/client/repres">Representantes</a>
+            <a routerLink="/dashboard/client/repres/{{ id_pessoa }}">Representantes</a>
           </div>
         </div>
   

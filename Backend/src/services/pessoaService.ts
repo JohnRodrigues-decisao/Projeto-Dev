@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import { PessoaInterface } from "../interfaces/pessoaInterface";
 
 import { PessoaModel } from "../models/pessoaModel";
+import { ClienteModel } from "../models/clienteModel";
 
 // Serviço para criar pessoas
 export async function postPessoa( pessoa: PessoaInterface ): Promise<PessoaInterface> {
@@ -21,7 +22,7 @@ export async function postPessoa( pessoa: PessoaInterface ): Promise<PessoaInter
 export async function getPessoas() {
   return await PessoaModel.findAll();
 }
-
+ 
 // Serviço para listar uma pessoa
 export async function getPessoa(id_pessoa: string) {
   return await PessoaModel.findOne({ where: { id_pessoa } })
@@ -29,7 +30,7 @@ export async function getPessoa(id_pessoa: string) {
 
 // Serviço para editar a pessoa
 export async function putPessoa(
-  id_pessoa: string,
+  id_pessoa: string, 
   nome: string,
   identificacao: string,
   nome_fantasia: string,
@@ -51,11 +52,6 @@ export async function putPessoa(
   );
 }
 
-// Serviço para exclusão a pessoa
-export async function deletePessoa(id_pessoa: string){
-  return await PessoaModel.destroy({where: { id_pessoa }})
-} 
-
 // valida se existe pessoas iguais antes de realizar o cadastro
 export async function getPessoaDetails(details: Partial<PessoaModel>): Promise<PessoaModel | null> {
   try {
@@ -63,7 +59,7 @@ export async function getPessoaDetails(details: Partial<PessoaModel>): Promise<P
       where: details,
     });
 
-    return endereco;
+    return endereco; 
   } catch (error) {
     throw new Error(`Erro ao buscar a pessoa por detalhes: ${error.message}`);
   }
@@ -80,3 +76,31 @@ export async function getIdentificacao(details: Partial<PessoaModel>): Promise<P
     throw new Error(`Erro ao buscar a pessoa por detalhes: ${error.message}`);
   }
 }
+
+// Controller para listar pessoas e clientes atrelados
+export async function getPessoaCliente() {
+  try {
+    const combineTables = await PessoaModel.findAll({
+      include: [
+        {
+          model: ClienteModel,
+          as: 'cliente',
+          required: false,
+        },
+      ],
+    });
+
+    // Filtrar as entradas sem cliente associado
+    const resultadoFiltrado = combineTables.filter((pessoa) => pessoa.cliente !== null);
+
+    return resultadoFiltrado;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// Serviço para exclusão a pessoa
+export async function deletePessoa(id_pessoa: string){
+  return await PessoaModel.destroy({where: { id_pessoa }})
+}  

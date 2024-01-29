@@ -131,17 +131,18 @@
   height: calc(100% - 180px);
 }
 
+.btn-disable{
+  border-radius: 8px;
+  background: var(--Grayscale-100, #F5F7FA);
+  color: var(--Grayscale-300, #CED4DA);
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
 
-
-
-
-
-
-
-
-
-
-/*  */
 
 .aside{
   margin-left: 20px;
@@ -541,7 +542,7 @@
         border: none;
       }
   
-      .disable{
+      .btn:disabled {
         border-radius: 8px;
         background: var(--grayscale-100, #F5F7FA)!important;
         color: #fff!important;

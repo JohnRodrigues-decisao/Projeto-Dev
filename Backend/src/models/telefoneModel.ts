@@ -34,8 +34,9 @@ export class TelefoneModel extends Model {
       {
         sequelize: db, 
         modelName: "Telefone",
-        updatedAt: false,
-        createdAt: false,
+        timestamps: true,
+        createdAt: true,
+        updatedAt: true
       }
     );
   }

@@ -7,3 +7,4 @@ export interface PessoaInterface {
   inscricao_municipal?: string;
   inscricao_estadual?: string;
 }
+ 

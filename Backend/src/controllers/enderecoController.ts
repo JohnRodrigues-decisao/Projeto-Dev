@@ -13,27 +13,35 @@ export async function listAllEnderecos(_, res: Response) {
 
 // Controller para listar um endereço pelo id_pessoa
 export async function listEndereco(req: Request, res: Response) {
-      const { id_pessoa } = req.params;
+  try {
+    const { id_pessoa } = req.params;
 
-      const findendereco = await getEndereco(id_pessoa);
+    const findendereco = await getEndereco(id_pessoa);
 
-      if(findendereco){
-        return res.json(findendereco);
-      } else {
-        return res.json({ msg: "Essa pessoa não possui endereços cadastrados" });
-      }
+    if(findendereco){
+      return res.json(findendereco);
+    } else {
+      return res.json({ msg: "Essa pessoa não possui endereços cadastrados" });
+    }
+  } catch (error) {
+    return res.json("Error ao realizar a requisição.");
+  }
 }
  
 // Controller para listar um endereço por id_endereco
 export async function listOneEndereco(req: Request, res: Response) {
-  const { id_endereco } = req.params;
+  try {
+    const { id_endereco } = req.params;
 
-  const findendereco = await getOneEndereco(id_endereco);
+    const findendereco = await getOneEndereco(id_endereco);
 
-  if(findendereco){
-    return res.json(findendereco);
-  } else {
-    return res.json({ msg: "Essa pessoa não possui endereços cadastrados" });
+    if(findendereco){
+      return res.json(findendereco);
+    } else {
+      return res.json({ msg: "Essa pessoa não possui endereços cadastrados" });
+    }
+  } catch (error) {
+    return res.json("Error ao realizar a requisição.");
   }
 }
 
@@ -146,4 +154,4 @@ export async function desabilitarIsPrincipal(req: Request, res: Response): Promi
   }
 } 
 
- 
+  

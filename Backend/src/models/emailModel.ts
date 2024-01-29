@@ -11,10 +11,10 @@ export class EmailModel extends Model {
   static initialization(db: Sequelize) {
     this.init(
       {
-        id_email: {
+        id_email: { 
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV4,
-          allowNull: false,
+          allowNull: false,  
           primaryKey: true,
         },
 
@@ -34,8 +34,9 @@ export class EmailModel extends Model {
       {
         sequelize: db,
         modelName: "Email",
-        updatedAt: false,
-        createdAt: false,
+        timestamps: true,
+        createdAt: true,
+        updatedAt: true
       }
     );
   }

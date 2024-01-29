@@ -12,8 +12,8 @@ export class EnderecoModel extends Model {
   public cidade!: string;
   public estado!: string;
   public is_principal!: boolean;  
-
-  public id_pessoa!: string;
+ 
+  public id_pessoa!: string; 
   createdAt: any;
 
   static initialization(db: Sequelize) {
@@ -66,6 +66,8 @@ export class EnderecoModel extends Model {
         sequelize: db,
         modelName: "Endereco",
         timestamps: true,
+        createdAt: true,
+        updatedAt: true
       }
     );
   };

@@ -5,15 +5,15 @@ export class ClienteModel extends Model {
   public id_cliente!: string;
   public data_cadastro!: Date;
   public situacao!: string;
-  public id_pessoa!: string;
+  static id_pessoa: any;
 
   static initialization(db: Sequelize) {
-    this.init(
+    this.init( 
       {
         id_cliente: {
-          type: DataTypes.UUID,
+          type: DataTypes.UUID,  
           defaultValue: DataTypes.UUIDV4,
-          allowNull: false,
+          allowNull: false, 
           primaryKey: true,
         },
         data_cadastro: {
@@ -40,7 +40,7 @@ export class ClienteModel extends Model {
 
   // Associando ao endereço
   static association(models: Models) {
-    this.belongsTo(models.pessoa, {
+    this.hasOne(models.pessoa, {
       as: "pessoa",
       foreignKey: {
         field: "id_pessoa",

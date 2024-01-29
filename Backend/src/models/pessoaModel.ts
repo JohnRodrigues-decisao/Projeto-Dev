@@ -10,6 +10,7 @@ export class PessoaModel extends Model {
   public nome_mae!: string;
   public inscricao_municipal!: string;
   public inscricao_estadual!: string;
+  cliente: null;
 
   static initialization(db: Sequelize) {
     this.init(
@@ -80,7 +81,7 @@ export class PessoaModel extends Model {
       },
     });
 
-    this.belongsTo(models.cliente, {
+    this.hasOne(models.cliente, {
       as: "cliente",
       foreignKey: {
         field: "id_pessoa", 

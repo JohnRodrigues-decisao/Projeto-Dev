@@ -4,17 +4,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PessoaInterface } from 'src/app/interfaces/pessoaInterface';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-
 import { Clientinterface } from 'src/app/interfaces/clientinterface';
 import { ClienteService } from 'src/app/service/cliente/cliente.service'
 
- 
- 
 @Component({
   selector: 'app-client-add',
   templateUrl: './client-add.component.html',
   styleUrls: ['./client-add.component.scss'],
 })
+
 export class ClientAddComponent implements OnInit {
   listClientes: Clientinterface[] = [];
   isSubmitDisabled: boolean = true;
@@ -109,8 +107,7 @@ export class ClientAddComponent implements OnInit {
     };
 
     if (this.validaIndentificacao(this.form.value.identificacao)) {
-      
-      
+
       this._PessoaService.createPessoa(pessoa).subscribe(
         (response) => {
           const cliente: Clientinterface = {

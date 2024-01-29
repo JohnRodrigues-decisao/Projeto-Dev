@@ -29,20 +29,17 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.savePassword) {
-      // Lógica para salvar a senha, por exemplo, usando localStorage
       localStorage.setItem('savedUsername', this.userEmail);
       localStorage.setItem('savedPassword', this.userPassword);
     }
   }
 
   login() {
-    // Validado que o usuário está coletando os dados
     if (this.userEmail == '' || this.userPassword == '') {
       this.toastr.error('Todos os campos são obrigatótios!');
       return;
     }
 
-    // Criando o body
     const user: UserInterface = {
       email: this.userEmail,
       senha: this.userPassword,

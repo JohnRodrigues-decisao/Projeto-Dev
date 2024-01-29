@@ -26,11 +26,6 @@ export class AddressService {
     return this.http.post<any>(`${this.myAppUrl}${this.myApiUrl}`, endereco)
   }
 
-  // listar dados do endereço pelo id_endereco
-  // getEnderecoId(id_endereco: string): Observable<EnderecoInterface> {
-  //   return this.http.get<EnderecoInterface>(`${this.myAppUrl}${this.myApiUrl}${id_endereco}`);
-  // }
-
   getEnderecoId(id_endereco: string): Observable<EnderecoInterface> {
     return this.http.get<EnderecoInterface>(`${this.myAppUrl}${this.myApiUrl}find/${id_endereco}`);
   }

@@ -29,7 +29,7 @@ export class Models {
             ) {
             this[pModel].initialization(db);
             }
-      });
+      }); 
 
       Object.keys(this).forEach((pModel: string) => {
             if (
