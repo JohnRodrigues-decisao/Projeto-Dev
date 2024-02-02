@@ -7,8 +7,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      // Defina as rotas específicas para o componente Dashboard aqui
-      // Exemplo: { path: 'subcomponent', component: SubComponent }
+      // Vamos defina as rotas específicas para o componente Dashboard aqui
     ]
   }
 ];
