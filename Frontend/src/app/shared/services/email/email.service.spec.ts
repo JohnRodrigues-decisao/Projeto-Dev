@@ -8,7 +8,7 @@ describe('EmailService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(EmailService);
-  });
+  }); 
 
   it('should be created', () => {
     expect(service).toBeTruthy();

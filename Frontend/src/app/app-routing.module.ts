@@ -6,17 +6,17 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 
 // Dashboard component
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { EditUserComponent } from './components/dashboard/profile/edit-user/edit-user.component';
+import { DashboardComponent } from './pages/dashboard/parent-component/dashboard.component';
+import { EditUserComponent } from './pages/dashboard/child-components/edit-user/edit-user.component';
 
 // Components dash
-import { DashClientComponent } from './pages/dash-client/dash-client.component';
-import { ClientAddComponent } from './components/dashboard/client-add/client-add.component';
-import { ClientEditComponent } from './components/dashboard/client-edit/client-edit.component';
-import { ClientLocationComponent } from './components/dashboard/client-location/client-location.component';
-import { ClientRepresentativesComponent } from './components/dashboard/client-representatives/client-representatives.component';
+import { DashClientComponent } from './pages/dashboard/child-components/dash-client/dash-client.component';
+import { ClientAddComponent } from './pages/dashboard/child-components/client-add/client-add.component';
+import { ClientEditComponent } from './pages/dashboard/child-components/client-edit/client-edit.component';
+import { ClientLocationComponent } from './pages/dashboard/child-components/client-location/client-location.component';
+import { ClientRepresentativesComponent } from './pages/dashboard/child-components/client-representatives/client-representatives.component';
 
-// Security
+// Security 
 import { authGuard } from './shared/utils/auth.guard';
 
 const routes: Routes = [

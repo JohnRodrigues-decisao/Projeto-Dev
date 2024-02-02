@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private myAppUrl: string;
+  private myAppUrl: string; 
   private myApiUrl: string;
 
   constructor(private http: HttpClient) {

@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router'; 
 
-import { PessoaService } from 'src/app/shared/services/pessoa/pessoa.service';
-import { ClienteService } from 'src/app/shared/services/cliente/cliente.service';
+import { PessoaService } from '../../service/pessoa/pessoa.service';
+import { ClienteService } from '../../service/cliente/cliente.service';
 
 import { PessoaInterface } from 'src/app/shared/model/interfaces/pessoaInterface';
 import { Clientinterface } from 'src/app/shared/model/interfaces/clientinterface';

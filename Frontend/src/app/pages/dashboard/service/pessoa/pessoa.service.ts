@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from 'src/app/shared/environments/environment';
 import { Observable, catchError, map } from 'rxjs';
-import { PessoaInterface } from '../../model/interfaces/pessoaInterface';
-import { PessoaClienteInterface } from '../../model/interfaces/PessoaClienteInterface';
+import { PessoaInterface } from 'src/app/shared/model/interfaces/pessoaInterface';
+import { PessoaClienteInterface } from 'src/app/shared/model/interfaces/PessoaClienteInterface';
 
 @Injectable({
   providedIn: 'root',

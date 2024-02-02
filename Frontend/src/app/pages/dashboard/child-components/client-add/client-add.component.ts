@@ -2,10 +2,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PessoaService } from 'src/app/shared/services/pessoa/pessoa.service';
+import { PessoaService } from '../../service/pessoa/pessoa.service';
 import { PessoaInterface } from 'src/app/shared/model/interfaces/pessoaInterface';
 import { Clientinterface } from 'src/app/shared/model/interfaces/clientinterface';
-import { ClienteService } from 'src/app/shared/services/cliente/cliente.service';
+import { ClienteService } from '../../service/cliente/cliente.service';
 
 @Component({
   selector: 'app-client-add',

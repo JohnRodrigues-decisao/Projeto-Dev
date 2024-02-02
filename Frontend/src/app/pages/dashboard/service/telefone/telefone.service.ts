@@ -1,8 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from 'src/app/shared/environments/environment';
 import { Observable, catchError, map } from 'rxjs';
-import { TelefoneInterface } from '../../model/interfaces/telefoneInterface';
+import { TelefoneInterface } from 'src/app/shared/model/interfaces/telefoneInterface';
 
 @Injectable({ 
   providedIn: 'root'

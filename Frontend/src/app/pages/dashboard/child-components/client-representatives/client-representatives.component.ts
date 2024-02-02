@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { representanteInterface } from 'src/app/shared/model/interfaces/representanteInterface';
-import { RepresentanteService } from 'src/app/shared/services/representante/representante.service';
+import { RepresentanteService } from '../../service/representante/representante.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';

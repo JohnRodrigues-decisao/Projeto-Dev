@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
-import { PessoaService } from 'src/app/shared/services/pessoa/pessoa.service';
-import { ClienteService } from 'src/app/shared/services/cliente/cliente.service';
+import { PessoaService } from '../../service/pessoa/pessoa.service';
+import { ClienteService } from '../../service/cliente/cliente.service';
 import { PessoaClienteInterface } from 'src/app/shared/model/interfaces/PessoaClienteInterface';
-import { RepresentanteService } from 'src/app/shared/services/representante/representante.service';
+import { RepresentanteService } from '../../service/representante/representante.service';
 
 @Component({
   selector: 'app-client-list',

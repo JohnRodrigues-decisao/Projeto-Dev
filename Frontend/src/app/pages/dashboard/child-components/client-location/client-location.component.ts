@@ -6,8 +6,8 @@ import { EmailInterface } from 'src/app/shared/model/interfaces/emailInterface';
 import { EnderecoInterface } from 'src/app/shared/model/interfaces/enderecoInterface';
 import { TelefoneInterface } from 'src/app/shared/model/interfaces/telefoneInterface';
 
-import { AddressService } from 'src/app/shared/services/address/address.service';
-import { TelefoneService } from 'src/app/shared/services/telefone/telefone.service';
+import { AddressService } from '../../service/address/address.service';
+import { TelefoneService } from '../../service/telefone/telefone.service';
 
 import { EmailService } from 'src/app/shared/services/email/email.service';
 

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EnderecoInterface } from '../../model/interfaces/enderecoInterface';
-import { environment } from '../../environments/environment';
+import { EnderecoInterface } from 'src/app/shared/model/interfaces/enderecoInterface';
+import { environment } from 'src/app/shared/environments/environment';
 
 @Injectable({
   providedIn: 'root'
