@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Módulos
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 // Pages
@@ -19,12 +19,12 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RegisterComponent } from './pages/register/register.component';
 
 // Components
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { HeaderComponent } from './components/header/header.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { HeaderComponent } from './shared/components/header/header.component';
 import { DashboardBodyComponent } from './components/dashboard/dashboard-body/dashboard-body.component';
-import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 import { ClientListComponent } from './components/dashboard/client-list/client-list.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 import { DashClientComponent } from './pages/dash-client/dash-client.component';
 import { ClientEditComponent } from './components/dashboard/client-edit/client-edit.component';
 import { ClientAddComponent } from './components/dashboard/client-add/client-add.component';

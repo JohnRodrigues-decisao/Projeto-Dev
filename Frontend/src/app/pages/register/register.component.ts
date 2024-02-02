@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserInterface } from 'src/app/interfaces/userInterface';
-import { ErrorService } from 'src/app/service/profile/error.service';
-import { UserService } from 'src/app/service/profile/user.service';
+import { UserInterface } from 'src/app/shared/model/interfaces/userInterface';
+import { ErrorService } from 'src/app/shared/services/profile/error.service';
+import { UserService } from 'src/app/shared/services/profile/user.service';
 
 import { ToastrService } from 'ngx-toastr';
 

@@ -17,7 +17,7 @@ import { ClientLocationComponent } from './components/dashboard/client-location/
 import { ClientRepresentativesComponent } from './components/dashboard/client-representatives/client-representatives.component';
 
 // Security
-import { authGuard } from './utils/auth.guard';
+import { authGuard } from './shared/utils/auth.guard';
 
 const routes: Routes = [
   // Login

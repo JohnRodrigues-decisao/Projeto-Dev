@@ -3,9 +3,9 @@ import { Token } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UserInterface } from 'src/app/interfaces/userInterface';
-import { ErrorService } from 'src/app/service/profile/error.service';
-import { UserService } from 'src/app/service/profile/user.service';
+import { UserInterface } from 'src/app/shared/model/interfaces/userInterface';
+import { ErrorService } from 'src/app/shared/services/profile/error.service';
+import { UserService } from 'src/app/shared/services/profile/user.service';
 
 @Component({
   selector: 'app-login',
